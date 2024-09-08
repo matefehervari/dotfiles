@@ -1,0 +1,33 @@
+swipe:
+  3:
+    left:
+      command: exec i3 move left
+    right:
+      command: exec i3 move right
+    up:
+      command: exec i3 move up
+    down:
+      command: exec i3 move down
+  4:
+    left:
+     command: exec i3 workspace prev
+    right:
+      command: exec i3 workspace next
+    up:
+      command: exec i3 fullscreen toggle
+    down:
+      command: exec i3 floating toggle
+pinch:
+  2:
+    in:
+      command: 'xdotool key ctrl+minus'
+    out:
+       command: 'xdotool key ctrl+plus'
+
+threshold:
+  swipe: 0.4
+  pinch: 0.1
+
+interval:
+  swipe: 0.8
+  pinch: 0.1
