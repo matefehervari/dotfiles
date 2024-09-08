@@ -7,3 +7,7 @@
 	path = fzf/.fzf
 	url = https://github.com/junegunn/fzf 
 	branch = master
+
+[submodule "util/util/fzf-git.sh"]
+	path = util/util/fzf-git.sh
+	url = https://github.com/junegunn/fzf-git.sh.git
