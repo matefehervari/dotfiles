@@ -1,4 +1,4 @@
 [submodule "nvim/.config/nvim"]
 	path = nvim/.config/nvim
 	url = https://github.com/matefehervari/myNvim
-	branch = nvim-0.9
+	branch = nvim-0.10
