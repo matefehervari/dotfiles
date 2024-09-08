@@ -244,4 +244,9 @@ source ~/util/fzf-git.sh/fzf-git.sh
 
 export BAT_THEME=tokyonight_night
 
+# ---- Unbind bash keymaps for movement -----
+bind -r "\C-l"
+bind -r "\C-r"
+bind -r "\C-j"
+bind -r "\C-k"
 
