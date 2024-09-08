@@ -2,3 +2,8 @@
 	path = nvim/.config/nvim
 	url = https://github.com/matefehervari/myNvim
 	branch = nvim-0.10
+
+[submodule "fzf/.fzf"]
+	path = fzf/.fzf
+	url = https://github.com/junegunn/fzf 
+	branch = master
