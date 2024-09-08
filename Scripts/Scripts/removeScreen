@@ -1,0 +1,9 @@
+#!/bin/bash
+if [[ ! -z $1 ]]; then
+    OUTPUT=$1
+    # checks if passed output is active (indicated by indented mode and an asterisk)
+    if [[ ! -z $(xrandr | pcregrep -M "$OUTPUT(.|\n)+?\s\s\s.+?\*") ]]; then
+        xrandr --output $OUTPUT --off
+        feh --bg-fill $BG
+    fi
+fi

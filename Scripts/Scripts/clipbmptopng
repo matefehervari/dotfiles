@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [[ -z "${1}" ]]; then
+  exit
+fi
+
+xclip -s clipboard -target image/bmp -o > "$1.bmp"
+convert "$1.bmp" "$1.png"
+rm "$1.bmp"

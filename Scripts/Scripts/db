@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# cd /home/mate/uni/part1a/ticks/databases/movies-relational
+echo "$1" | hsql db1a 

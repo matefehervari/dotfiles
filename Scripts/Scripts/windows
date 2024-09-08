@@ -1,0 +1,15 @@
+#!/bin/bash
+vm=WindowsEww
+if [[ $1 = "start" ]]; then
+  if [[ ! -z $2 ]]; then
+    vboxmanage modifyvm "$vm" --monitorcount $2
+    echo "[Windows] Set monitor count: $2"
+  else 
+    vboxmanage modifyvm "$vm" --monitorcount 1
+  fi
+  echo "[Windows] Starting..."
+  vboxmanage startvm WindowsEww 
+elif [[ $1 = "stop" ]]; then
+  echo "[Windows] Stopping..."
+  vboxmanage controlvm WindowsEww poweroff
+fi

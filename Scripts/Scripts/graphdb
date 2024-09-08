@@ -1,0 +1,4 @@
+#!/bin/sh
+
+cypher=$(cat $2 | sed 's/\n/ /')
+echo $cypher | java -jar /home/mate/uni/part1a/ticks/databases/graphDB/graph-db.jar $1

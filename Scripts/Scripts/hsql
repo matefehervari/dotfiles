@@ -1,0 +1,14 @@
+#!/bin/bash
+
+rcfile=`echo $1 | sed 's/\.rc$//g'`
+echo $rcfile
+db_name=$2
+if [[ ! -z $rcfile ]]; then
+  if [[ ! -z $db_name ]]; then
+    java -jar $HSQLDB_JARFILES/sqltool.jar --rcfile=$rcfile.rc $db_name
+  else
+    java -jar $HSQLDB_JARFILES/sqltool.jar --rcfile=$1.rc $1
+  fi
+else 
+  echo "Arguments: hsql <path to rcfile> <dbname (usually rcfile name)>"
+fi

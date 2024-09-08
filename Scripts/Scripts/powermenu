@@ -1,0 +1,16 @@
+#!/bin/bash
+
+selected=$(echo "Suspend
+Shutdown
+Restart" | rofi -dmenu -p "Power Options")
+
+if [ "$selected" == "Suspend" ]
+then
+  systemctl suspend
+elif [ "$selected" == "Shutdown" ]
+then
+  poweroff
+elif [ "$selected" == "Restart" ]
+then
+  reboot
+fi

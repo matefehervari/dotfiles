@@ -1,0 +1,31 @@
+#!/bin/bash
+WEYLUS_PORT=1701
+WEYLUS_SOCKET_PORT=9001
+OUTPUT="HDMI-1"
+
+dev=$(adb devices | grep -P 'device$' -o)
+if [[ ! -z $(ps aux | grep weylus | grep -v grep) ]]; then
+        echo "[tablet] Removing abandoned tablet display"
+        weylus_pid=$(ps aux | grep weylus | grep -v grep | grep -P '\d+' -o | head -n 1)
+        kill $weylus_pid
+        removeScreen $OUTPUT
+fi
+if [[ ! -z $dev ]]; then
+    if [[ -z $(ps aux | grep weylus | grep -v grep) ]]; then
+        echo "[tablet] Acquring dimensions"
+        IFS=x read WIDTH HEIGHT <<< $(adb shell wm size | grep -P '\d+x\d+' -o)
+        FPS=$(adb shell dumpsys display | tr ',' '\n' | grep -P '(?<=fps=)[\d\.]+' -o -m 1)
+
+        echo "[tablet] Initiliasing screen"
+        makeScreen $WIDTH $HEIGHT $FPS $OUTPUT
+
+        echo "[tablet] Configuring reverse tethering"
+        adb reverse tcp:$WEYLUS_PORT tcp:$WEYLUS_PORT
+        adb reverse tcp:$WEYLUS_SOCKET_PORT tcp:$WEYLUS_SOCKET_PORT
+
+        echo "[tablet] Starting weylus"
+        weylus --no-gui > /dev/null 2>&1 &
+    fi
+else
+    echo "[tablet] No devices connected"
+fi

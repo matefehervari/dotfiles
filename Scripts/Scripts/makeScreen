@@ -1,0 +1,30 @@
+#!/bin/bash
+PRIMARY="eDP-1"
+
+if [ ! -z $1 ] && [ ! -z $2 ] && [ ! -z $3 ] & [ ! -z $4 ]; then
+
+    OUTPUT=$4
+    opts=$(gtf "$1" "$2" "$3" | grep -P '\".+' -o)
+    mode_name=$(echo "$opts" | grep -P '(?<=\").+?(?=\")' -o)
+    opts=$(echo $opts | grep -P '(?<=\"\s).+' -o)
+    fps="$3.00"
+
+    # if mode has not yet been created
+    if [[ -z $(xrandr | grep $mode_name) ]]; then
+        
+        xrandr --newmode $mode_name $opts
+    fi
+
+    # if mode has not been added to display
+    if [[ -z $(xrandr | grep "$mode_name $fps") ]]; then
+
+        xrandr --addmode $OUTPUT $mode_name
+    fi
+
+    # if screen is not active
+    if [[ -z $(xrandr | grep "$mode_name $fps*") ]]; then
+
+        xrandr --output HDMI-1 --mode $mode_name --below eDP-1
+        feh --bg-fill $BG
+    fi
+fi

@@ -1,0 +1,22 @@
+#!/bin/bash
+
+device_ids=$(xsetwacom --list devices | grep -P "\d+" -o)
+primary=$(xrandr | grep -oP ".+?(?= connected primary)")
+
+if [ -z "$device_ids" ]; then
+  echo "[Wacom] No Wacom devices found"
+fi
+
+
+for id in $device_ids
+do
+  if [ ! -z "$primary" ]; then
+    xsetwacom --set $id MapToOutput $primary
+  else
+    echo "[Wacom] Could not map to primary output - primary output not found"
+  fi
+
+  xsetwacom --set $id Rotate half # Rotates by 180 deg - pen sleeve on left
+  xsetwacom --set $id Button 3 "key Shift"
+  xsetwacom --set $id Button 2 "key +space"
+done

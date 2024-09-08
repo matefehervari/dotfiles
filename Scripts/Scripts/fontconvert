@@ -1,0 +1,4 @@
+#!/bin/bash
+
+fontforge -c \
+  "import fontforge; from sys import argv; f = fontforge.open(argv[1]); f.generate(argv[2])" $1 $2
