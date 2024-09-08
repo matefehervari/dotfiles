@@ -1,0 +1,33 @@
+[user]
+  email = matefehervari24@gmail.com
+  name = endoxide
+
+[credential]
+  helper = /usr/local/bin/git-credential-manager
+
+[credential "https://dev.azure.com"]
+  useHttpPath = true
+
+[init]
+  defaultBranch = main
+
+[mergetool "fugitive"]
+  cmd = nvim -f -c \"Gvdiff\" \"$MERGED\"
+
+[merge]
+  tool = fugitive
+  conflictstyle = diff3
+
+[core]
+  pager = delta
+
+[interactive]
+  diffFilter = delta --color-only
+
+[delta]
+  navigate = true    # use n and N to move between diff sections
+  side-by-side = true
+  minus-style = syntax bold auto
+
+[diff]
+  colorMoved = default
