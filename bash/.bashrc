@@ -250,3 +250,5 @@ bind -r "\C-r"
 bind -r "\C-j"
 bind -r "\C-k"
 
+# ---- Attach to or make default tmux sessiond -----
+source $HOME/.bash/.tmux_init.sh

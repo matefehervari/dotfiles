@@ -1,0 +1,16 @@
+#!/bin/bash
+
+sess=$1
+
+# test if the session has windows
+is_closed(){ 
+    n=$(tmux ls 2> /dev/null | grep "^$sess" | wc -l)
+    [[ $n -eq 0 ]]
+}
+
+# either create it or attach to it
+if is_closed ; then
+  tmux new-session -s $sess
+else
+  tmux attach -t $sess
+fi
