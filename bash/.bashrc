@@ -138,7 +138,24 @@ export NVIM_LISTEN_ADDRESS=/tmp/nvimsocket
 
 . "$HOME/.cargo/env"
 
-alias e="exit"
+function in_toggle_term {
+  [ $TOGGLETERM ]
+}
+
+function in_tmux {
+  [ $TMUX ]
+}
+
+function toggleterm_tmux_exit {
+  if ! in_toggle_term && in_tmux; then
+    local this_session=$(tmux display-message -p '#S')
+    tmux detach-client -s $this_session
+  else
+    exit
+  fi
+}
+
+alias e="toggleterm_tmux_exit"
 alias c="clear"
 alias v="popup-nvim.sh"
 alias nh="cd $NVIM"
