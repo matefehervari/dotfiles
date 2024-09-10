@@ -140,6 +140,7 @@ export NVIM_LISTEN_ADDRESS=/tmp/nvimsocket
 
 alias e="exit"
 alias c="clear"
+alias v="popup-nvim.sh"
 alias nh="cd $NVIM"
 alias i3h="cd $I3_HOME"
 alias polyh="cd $POLYBAR_HOME"
