@@ -99,7 +99,7 @@ exec --no-startup-id /usr/libexec/gsd-xsettings
 # exec ~/Scripts/i3/touchPad.sh
 
 # touchpad gestures
-exec_always --no-startup-id "killall -p fusuma -o 5s && fusuma"
+exec_always --no-startup-id "killall -p fusuma -o 5s; fusuma"
 
 # Sreen brightness controls
 bindsym XF86MonBrightnessUp exec sudo brightnessctl set +5%
