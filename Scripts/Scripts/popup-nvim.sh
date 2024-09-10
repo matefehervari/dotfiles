@@ -11,7 +11,7 @@ file=$(fd --type f --hidden \
   --exclude site-packages \
   --exclude .opam \
   --exclude .pub-cache \
-  | fzf-tmux -p -w 90%)
+  | fzf-tmux -p -w 90% --reverse)
 
 if [[ $file ]]; then
   echo $file | xargs nvim
