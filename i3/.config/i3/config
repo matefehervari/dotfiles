@@ -192,7 +192,7 @@ bindsym $mod+Return exec i3-sensible-terminal
 
 # display settings
 bindsym $mod+Shift+m exec "/home/mate/.screenlayout/displayMono.sh && /home/mate/.screenlayout/displayConfig.sh"
-bindsym $mod+Shift+d exec "/home/mate/.screenlayout/aztineDual.sh && /home/mate/.screenlayout/displayConfig.sh"
+bindsym $mod+Shift+d exec "/home/mate/.screenlayout/displayDual.sh && /home/mate/.screenlayout/displayConfig.sh"
 # bindsym $mod+Shift+o exec "/home/mate/Scripts/screenoffset.sh && /home/mate/.screenlayout/displayConfig.sh"
 
 # kill focused window
@@ -210,17 +210,14 @@ exec_always --no-startup-id $HOME/Scripts/i3/init-tmux-session "2-polybar" "nvim
 exec_always --no-startup-id $HOME/Scripts/i3/init-tmux-session "3-dotfiles" -c $HOME/.dotfiles/
 exec_always --no-startup-id $HOME/Scripts/i3/init-tmux-session "4-nvim" -c $HOME/.config/nvim/lua/endoxide/
 
+# screen autodetect
+exec_always --no-startup-id $HOME/Scripts/screen-autodetect
+
 # change focus
 bindsym $mod+h focus left
 bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
-
-# alternatively, you can use the cursor keys:
-# bindsym $mod+Left focus left
-# bindsym $mod+Down focus down
-# bindsym $mod+Up focus up
-# bindsym $mod+Right focus right
 
 # move focused window
 bindsym $mod+Shift+h move left

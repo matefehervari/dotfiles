@@ -1,0 +1,34 @@
+#!/bin/bash
+
+killall -o 5s screen-autodetect
+
+# returns 0 for disconnected and 1 for connected
+connected() {
+  xrandr | grep HDMI-1 | grep -Po "\sconnected\s" | wc -l
+}
+
+LAST_HDMI_CONNECTED_STAUS=$(connected)
+
+apply_connected_status() {
+  killall -o 5s polybar
+  if [[ $LAST_HDMI_CONNECTED_STAUS == 1 ]]; then
+    $HOME/.screenlayout/displayDual.sh && $HOME/.screenlayout/displayConfig.sh $1 1> /dev/null 2> /dev/null &
+    echo "HDMI was connected"
+  else
+    $HOME/.screenlayout/displayMono.sh && $HOME/.screenlayout/displayConfig.sh $1 1> /dev/null 2> /dev/null &
+    echo "HDMI was disconnected"
+  fi
+}
+
+apply_connected_status "nopolybar"
+
+while true
+do
+    sleep 1
+    CONNECTED=$(connected)
+
+    if [[ $CONNECTED != $LAST_HDMI_CONNECTED_STAUS ]]; then
+      LAST_HDMI_CONNECTED_STAUS=$CONNECTED
+      apply_connected_status
+    fi
+done

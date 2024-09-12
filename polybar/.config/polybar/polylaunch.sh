@@ -1,6 +1,5 @@
 #!/bin/bash
 
-killall -p polybar
 
 launch ()
 {
@@ -16,4 +15,4 @@ MONITOR=$monitor polybar --config="/home/mate/.config/polybar/config.ini" -r \
   echo "---" | tee -a /tmp/polybar1.log /tmp/polybar2.log
 }
 
-launch
+killall -o 5s polybar; launch
