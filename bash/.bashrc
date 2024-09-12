@@ -152,7 +152,7 @@ function multiple_panes {
 }
 
 function toggleterm_tmux_exit {
-  if multiple_panes; then
+  if multiple_panes && ! in_toggle_term; then
     local active_pane=$(tmux list-panes | grep active | grep -Po "^\d+")
     tmux kill-pane -t $active_pane
   elif ! in_toggle_term && in_tmux; then
