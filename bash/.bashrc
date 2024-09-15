@@ -1,14 +1,21 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
-source $HOME/.bash/.gcloudrc
-source $HOME/.bash/.tmux_completion.sh
 
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
       *) return;;
 esac
+
+if [ -f ~/.bash/.gcloudrc ]; then
+  source ~/.bash/.gcloudrc
+fi
+if [ -f ~/.bash/.tmux_completion ]; then
+  source $HOME/.bash/.tmux_completion.sh
+fi
+
+# ----- Terminal History Setup -----
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -29,8 +36,16 @@ shopt -s checkwinsize
 # match all files and zero or more directories and subdirectories.
 #shopt -s globstar
 
+# -------------------------
+
+# ----- Friendly pipe -----
+
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# -------------------------------
+
+# ----- Command line status -----
 
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
@@ -77,6 +92,10 @@ else
 fi
 unset color_prompt force_color_prompt
 
+# -------------------
+
+# ----- Aliases -----
+
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
@@ -102,14 +121,10 @@ alias l='ls -CF'
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
-# Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
+# -----------------------------
 
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
+
+# ----- Programmable completion -----
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
@@ -122,64 +137,69 @@ if ! shopt -oq posix; then
   fi
 fi
 
-export PATH=$PATH:/home/mate/nodejs/bin:/home/mate/Scripts:/usr/lib/jvm/jdk-17/bin:/opt/apache-maven-3.8.6/bin:/opt/weylus:/opt:/$HOME/.config/polybar
+# -----------------------------------
+
+# ----- Environment Variables -----
+
+PATHS=(
+  "$PATH"
+  "/home/mate/nodejs/bin"
+  "/home/mate/Scripts"
+  "/usr/lib/jvm/jdk-17/bin"
+  "/opt/apache-maven-3.8.6/bin"
+  "/opt/weylus"
+  "/opt"
+  "$HOME/.config/polybar"
+  "/opt/bsc-2024.07-ubuntu-22.04/bin"
+  "$HOME/uni/latex-util/"
+)
+# export PATH="$PATH:/home/mate/nodejs/bin:/home/mate/Scripts:/usr/lib/jvm/jdk-17/bin:/opt/apache-maven-3.8.6/bin:/opt/weylus:/opt:$HOME/.config/polybar:/opt/bsc-2024.07-ubuntu-22.04/bin"
+export PATH=$(IFS=: ; echo "${PATHS[*]}")
 export JAVA_HOME=/usr/lib/jvm/jdk-17
 export NVIM=$HOME/.config/nvim/lua/endoxide/
 export PYTHON_HOME=$HOME/Atom/Python/
 export DB_HOME=$HOME/uni/part1a/ticks/databases/movies-relational/
 export BG="$HOME/Pictures/Wallpapers/ashenPyke.jpg"
-export UNI_HOME="$HOME/uni/"
+export UNI_HOME="$HOME/uni"
 export UNI_YEAR="part2"
+export SUPO_HOME="$UNI_HOME/latex-util"
 export AOC="/home/mate/Atom/C/C++/AdventCalender"
 export PERSONAL_TEX="$UNI_HOME/$UNI_YEAR/supervisions/Personal/personal.tex"
 export I3_HOME=$HOME/.config/i3/
 export POLYBAR_HOME=$HOME/.config/polybar/
 export NVIM_LISTEN_ADDRESS=/tmp/nvimsocket
+export TEXINPUT=".:$SUPO_HOME:$TEXINPUTS"
 
-. "$HOME/.cargo/env"
+# ---------------------------------
 
-function in_toggle_term {
-  [ $TOGGLETERM ]
-}
+# ----- Alias definitions -----
 
-function in_tmux {
-  [ $TMUX ]
-}
+# You may want to put all your additions into a separate file like
+# ~/.bash_aliases, instead of adding them here directly.
+# See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
-function multiple_panes {
-  num_panes=$(tmux list-panes | wc -l)
-  [ $num_panes -gt 1 ]
-}
+if [ -f ~/.bash/.bash_aliases ]; then
+    . ~/.bash/.bash_aliases
+fi
 
-function toggleterm_tmux_exit {
-  if multiple_panes && ! in_toggle_term; then
-    local active_pane=$(tmux list-panes | grep active | grep -Po "^\d+")
-    tmux kill-pane -t $active_pane
-  elif ! in_toggle_term && in_tmux; then
-    local this_session=$(tmux display-message -p '#S')
-    tmux detach-client -s $this_session
-  else
-    exit
-  fi
-}
+# -----------------------------
 
-alias e="toggleterm_tmux_exit"
-alias c="clear"
-alias v="popup-nvim.sh"
-alias nh="cd $NVIM"
-alias i3h="cd $I3_HOME"
-alias polyh="cd $POLYBAR_HOME"
-alias ph="cd $PYTHON_HOME"
-alias dbh="cd $DB_HOME"
-alias mvnc="mvn archetype:generate -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeVersion=1.4"
-alias aoc="cd $AOC"
-alias g++="g++ -std=c++2a"
-alias pythonenv="source $GLOBAL_PYTHON_VENV/bin/activate"
-alias pls="ps aux | grep $1"
-alias uni="cd $UNI_HOME/$UNI_YEAR"
+# ----- Cargo -----
+
+if [ -f ~/.cargo/env ]; then
+  . ~/.cargo/env
+fi
+
+# -----------------
+
+# ----- Fix arrow keys in tmux -----
 
 bind '"\e[1;5D" backward-word' 
 bind '"\e[1;5C" forward-word'
+
+# ----------------------------------
+
+# ----- Uni shortcuts -----
 
 t() { cd $UNI_HOME/$UNI_YEAR/ticks/$1; }
 s() { 
@@ -191,8 +211,15 @@ s() {
 }
 p() { cd $UNI_HOME/$UNI_YEAR/practicals/$1; }
 
+# -------------------------
+
 # ---- Eza (better ls) ----
+
 alias ls="eza --color=always --git --icons=always"
+
+# -------------------------
+
+# ----- cd venv activation -----
 
 function cd() {
   builtin cd "$@"
@@ -218,6 +245,8 @@ function cd() {
   ls
 }
 
+# ------------------------------
+
 function mkcd() {
   mkdir $1 && cd $_
 }
@@ -227,7 +256,7 @@ function mkcd() {
 # Set up fzf key bindings and fuzzy completion
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
-# -- Use fd instead of fzf --
+# Use fd instead of fzf
 
 export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
