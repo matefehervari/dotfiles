@@ -189,6 +189,7 @@ floating_modifier $mod
 
 # start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Shift+Return exec TEMP_TERM=1 i3-sensible-terminal
 
 # display settings
 bindsym $mod+Shift+m exec "/home/mate/.screenlayout/displayMono.sh && /home/mate/.screenlayout/displayConfig.sh"

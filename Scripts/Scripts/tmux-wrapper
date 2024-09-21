@@ -10,7 +10,7 @@ is_closed(){
 
 # either create it or attach to it
 if is_closed ; then
-  tmux new-session -s $sess
+  tmux new-session -s $sess -e "TEMP_TERM=$TEMP_TERM"
 else
   tmux attach -t $sess
 fi

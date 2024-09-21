@@ -11,13 +11,16 @@ function multiple_panes {
   [ $num_panes -gt 1 ]
 }
 
+function in_temp_term {
+  [ $TEMP_TERM ]
+}
+
 function toggleterm_tmux_exit {
   if multiple_panes && ! in_toggle_term; then
     local active_pane=$(tmux list-panes | grep active | grep -Po "^\d+")
     tmux kill-pane -t $active_pane
-  elif ! in_toggle_term && in_tmux; then
-    local this_session=$(tmux display-message -p '#S')
-    tmux detach-client -s $this_session
+  elif ! in_toggle_term && in_tmux && ! in_temp_term; then
+    tmux detach-client
   else
     exit
   fi
