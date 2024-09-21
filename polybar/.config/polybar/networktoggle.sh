@@ -4,6 +4,8 @@ NETWORK_TOGGLE_STATE=hostname
 
 log()
 {
+  # make dir if not exists
+  [ -d /tmp/polybar ] || mkdir /tmp/polybar
   echo "$(date '+%x %X'): $1" >> /tmp/polybar/network.log
 }
 
