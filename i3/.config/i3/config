@@ -210,6 +210,7 @@ exec_always --no-startup-id $HOME/Scripts/i3/init-tmux-session "1-ithree" "nvim 
 exec_always --no-startup-id $HOME/Scripts/i3/init-tmux-session "2-polybar" "nvim $HOME/.config/polybar/"
 exec_always --no-startup-id $HOME/Scripts/i3/init-tmux-session "3-dotfiles" -c $HOME/.dotfiles/
 exec_always --no-startup-id $HOME/Scripts/i3/init-tmux-session "4-nvim" -c $HOME/.config/nvim/lua/endoxide/
+exec_always --no-startup-id $HOME/Scripts/i3/init-tmux-session "5-supos" -c $HOME/uni/part2/supervisions/
 
 # screen autodetect
 exec_always --no-startup-id $HOME/Scripts/screen-autodetect
