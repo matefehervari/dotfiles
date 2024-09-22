@@ -152,6 +152,7 @@ PATHS=(
   "$HOME/.config/polybar"
   "/opt/bsc-2024.07-ubuntu-22.04/bin"
   "$HOME/uni/latex-util/"
+  "$HOME/util/i3-battery-popup"
 )
 # export PATH="$PATH:/home/mate/nodejs/bin:/home/mate/Scripts:/usr/lib/jvm/jdk-17/bin:/opt/apache-maven-3.8.6/bin:/opt/weylus:/opt:$HOME/.config/polybar:/opt/bsc-2024.07-ubuntu-22.04/bin"
 export PATH=$(IFS=: ; echo "${PATHS[*]}")

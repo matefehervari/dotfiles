@@ -180,6 +180,9 @@ exec --no-startup-id syncthing
 exec_always --no-startup-id /home/mate/Scripts/i3/start-barrier.sh
 exec_always --no-startup-id /home/mate/Scripts/barrierFixKB
 
+# start battery popup
+exec --no-startup-id i3-battery-popup
+
 # gaps
 gaps inner 8
 
