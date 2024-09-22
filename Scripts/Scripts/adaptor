@@ -1,0 +1,7 @@
+#!/bin/sh
+
+ACTION=$1
+ADAPTOR_NAME=$(ifconfig -a | grep -Po "^[^:\s]+" | fzf-tmux -p -w 30% --reverse)
+
+echo $ACTION
+sudo ifconfig $ADAPTOR_NAME $ACTION
