@@ -191,8 +191,8 @@ bindsym $mod+Return exec i3-sensible-terminal
 bindsym $mod+Shift+Return exec TEMP_TERM=1 i3-sensible-terminal
 
 # display settings
-bindsym $mod+Shift+m exec /home/mate/.screenlayout/displayMono.sh
-bindsym $mod+Shift+d exec /home/mate/.screenlayout/displayDual.sh
+bindsym $mod+Shift+m exec /home/mate/.screenlayout/displayMono
+bindsym $mod+Shift+d exec /home/mate/.screenlayout/displayMulti
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -211,7 +211,7 @@ exec_always --no-startup-id $HOME/Scripts/i3/init-tmux-session "4-nvim" -c $HOME
 exec_always --no-startup-id $HOME/Scripts/i3/init-tmux-session "5-supos" -c $HOME/uni/part2/supervisions/
 
 # screen autodetect
-exec_always --no-startup-id $HOME/Scripts/screen-autodetect
+exec_always --no-startup-id $HOME/.screenlayout/screen-autodetect
 
 # change focus
 bindsym $mod+h focus left

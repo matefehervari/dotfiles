@@ -1,0 +1,49 @@
+#!/bin/bash
+
+killall -o 5s screen-autodetect
+
+SCREENLAYOUT_DIR=$(dirname $(realpath $0))
+
+screens() {
+  xrandr | grep -Po "^\S+" | tail -n +2
+}
+
+# returns 0 for disconnected and 1 for connected
+connected() {
+  xrandr | grep "^$1" | grep -Po "\sconnected\s" | wc -l
+}
+
+apply_connected_status() {
+  $SCREENLAYOUT_DIR/displayMulti 1> /dev/null 2> /dev/null &
+}
+
+declare -A LAST_CONNECTED_STATUS
+for display in $(screens)
+do
+  LAST_CONNECTED_STATUS[$display]=$(connected $display)
+done
+echo ${!LAST_CONNECTED_STATUS[@]}
+echo ${LAST_CONNECTED_STATUS[@]}
+
+apply_connected_status
+echo "Applied initially"
+
+while true
+do
+  CONNECTION_CHANGED=
+  for display in $(screens)
+  do
+    CONNECTED=$(connected $display)
+
+    if [[ $CONNECTED != ${LAST_CONNECTED_STATUS[$display]} ]]; then
+      echo "Connection for display $display changed"
+      LAST_CONNECTED_STATUS[$display]=$CONNECTED
+      CONNECTION_CHANGED=1
+    fi
+  done
+  if [ $CONNECTION_CHANGED ]; then
+    apply_connected_status
+    echo "Applying screen updates..."
+  fi
+  sleep 1
+done

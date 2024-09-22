@@ -1,5 +1,5 @@
 #!/bin/bash
 
-feh --bg-fill $WALLPAPER
+feh --bg-scale $WALLPAPER
 notify-send -t 2000 "$(xrandr --listactivemonitors)"
-$HOME/util/xborder-inactive/launch.sh
+# $HOME/util/xborder-inactive/launch.sh
