@@ -1,7 +1,24 @@
 #!/bin/sh
 
 ACTION=$1
-ADAPTOR_NAME=$(ifconfig -a | grep -Po "^[^:\s]+" | fzf-tmux -p -w 30% --reverse)
+case $ACTION in
+  up)
+    OPTIONS=$(ifconfig -a | grep -P "^\S+" | grep -v UP | grep -Po "^[^:]+")
+    ;;
+  down)
+    OPTIONS=$(ifconfig -a | grep -P "^\S+" | grep UP | grep -Po "^[^:]+")
+esac
 
-echo $ACTION
+if [ -z "$OPTIONS" ]; then
+  echo "No adaptors available to set to $ACTION"
+  exit
+fi
+
+ADAPTOR_NAME=$(echo $OPTIONS | sed "s/ /\n/g" | fzf-tmux -p -w 30% --reverse)
+
+if [ -z $ADAPTOR_NAME ]; then
+  exit
+fi
+
 sudo ifconfig $ADAPTOR_NAME $ACTION
+echo "Set adaptor $ADAPTOR_NAME to $ACTION"
