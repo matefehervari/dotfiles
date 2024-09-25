@@ -1,3 +1,19 @@
 #!/bin/bash
 
-ifconfig -a | grep -P -o "enx\w+" | sudo dhclient
+huaweii_interface="enx0c5b8f279a64"
+
+interface_connectable=$(ifconfig -a | grep -o "$huaweii_interface")
+if [[ -z $interface_connectable ]]; then
+  echo "Interface not connectable. Exting..."
+  exit
+fi
+
+interface_connected=$(ifconfig | grep -o "$huaweii_interface")
+if [[ -z $interface_connected ]]; then
+  sudo ifconfig $huaweii_interface up
+  echo "Interface connected. Configuring dhcp..."
+fi
+
+sudo dhclient -r $huaweii_interface
+sudo dhclient $huaweii_interface
+echo "dhcp configuration finished."
