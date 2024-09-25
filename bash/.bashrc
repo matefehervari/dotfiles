@@ -8,11 +8,16 @@ case $- in
       *) return;;
 esac
 
-if [ -f ~/.bash/.gcloudrc ]; then
-  source ~/.bash/.gcloudrc
+HOME="/home/mate"
+
+if [ -f $HOME/.bash/.gcloudrc ]; then
+  source $HOME/.bash/.gcloudrc
 fi
-if [ -f ~/.bash/.tmux_completion ]; then
+if [ -f $HOME/.bash/.tmux_completion ]; then
   source $HOME/.bash/.tmux_completion.sh
+fi
+if [ -f $HOME/.bash/.custom_completions ]; then
+  source $HOME/.bash/.custom_completions
 fi
 
 # ----- Terminal History Setup -----
@@ -98,7 +103,7 @@ unset color_prompt force_color_prompt
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    test -r $HOME/.dircolors && eval "$(dircolors -b $HOME/.dircolors)" || eval "$(dircolors -b)"
     alias ls='ls --color=auto'
     alias sus='systemctl suspend'
     #alias dir='dir --color=auto'
@@ -153,6 +158,7 @@ PATHS=(
   "/opt/bsc-2024.07-ubuntu-22.04/bin"
   "$HOME/uni/latex-util/"
   "$HOME/util/i3-battery-popup"
+  "$HOME/.cargo/bin"
 )
 # export PATH="$PATH:/home/mate/nodejs/bin:/home/mate/Scripts:/usr/lib/jvm/jdk-17/bin:/opt/apache-maven-3.8.6/bin:/opt/weylus:/opt:$HOME/.config/polybar:/opt/bsc-2024.07-ubuntu-22.04/bin"
 export PATH=$(IFS=: ; echo "${PATHS[*]}")
@@ -179,16 +185,16 @@ export TEXINPUT=".:$SUPO_HOME:$TEXINPUTS"
 # ~/.bash_aliases, instead of adding them here directly.
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
-if [ -f ~/.bash/.bash_aliases ]; then
-    . ~/.bash/.bash_aliases
+if [ -f $HOME/.bash/.bash_aliases ]; then
+    source $HOME/.bash/.bash_aliases
 fi
 
 # -----------------------------
 
 # ----- Cargo -----
 
-if [ -f ~/.cargo/env ]; then
-  . ~/.cargo/env
+if [ -f $HOME/.cargo/env ]; then
+  . $HOME/.cargo/env
 fi
 
 # -----------------
@@ -255,7 +261,7 @@ function mkcd() {
 # ----- FZF -----
 #
 # Set up fzf key bindings and fuzzy completion
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+[ -f $HOME/.fzf.bash ] && source $HOME/.fzf.bash
 
 # Use fd instead of fzf
 
@@ -294,7 +300,7 @@ _fzf_comprun() {
 }
 
 # ---- fzf git ---
-source ~/util/fzf-git.sh/fzf-git.sh
+source $HOME/util/fzf-git.sh/fzf-git.sh
 
 # ----- Bat (better cat) -----
 
