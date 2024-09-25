@@ -1,6 +1,6 @@
 [user]
   email = matefehervari24@gmail.com
-  name = endoxide
+	name = Máté Fehérvári
 
 [credential]
   helper = /usr/local/bin/git-credential-manager
@@ -31,3 +31,8 @@
 
 [diff]
   colorMoved = default
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
