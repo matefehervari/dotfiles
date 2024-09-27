@@ -125,7 +125,7 @@ bindsym $mod+Shift+p exec --no-startup-id polybar-msg cmd toggle; exec ~/.config
 
 # for transparent bg
 exec_always --no-startup-id picom -b --backend glx --config /home/mate/.config/picom.conf
-exec_always --no-startup-id /home/mate/util/xborder-inactive/launch.sh
+exec_always --no-startup-id /home/mate/util/xborder/launch.sh
 
 # take a screenshot of a screen region and copy it to a clipboard
 bindsym $mod+Shift+s exec --no-startup-id $HOME/Scripts/screenshot
