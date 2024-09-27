@@ -155,6 +155,8 @@ exec --no-startup-id i3-msg 'workspace $ws1;exec i3-sensible-terminal;'
 exec --no-startup-id i3-msg 'workspace $ws3;exec /home/mate/Scripts/i3/startChrome.sh;'
 exec --no-startup-id teams
 
+assign [class="obsidian"] $ws4
+assign [class="Zotero" title="^.* - Zotero$"] $ws5
 assign [class="discord"] $ws6
 assign [class="Microsoft Teams - Preview"] $ws7
 
