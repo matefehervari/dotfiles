@@ -1,6 +1,20 @@
 #!/bin/bash
 
-killall -o 5s screen-autodetect
+# sleep with builtins only
+snore()
+{
+    local IFS
+    [[ -n "${_snore_fd:-}" ]] || exec {_snore_fd}<> <(:)
+    read ${1:+-t "$1"} -u $_snore_fd || :
+}
+
+self=$$
+sc_ids=$(pgrep -f screen-autodetect | xargs)
+bash_ids=$(pgrep -f /bin/bash | xargs)
+candidates=$(echo $bash_ids | grep -Po "($(echo $sc_ids | sed "s/ /|/g"))" | grep -v $self)
+if [[ $candidates ]]; then
+  echo $candidates | xargs -L1 kill
+fi
 
 SCREENLAYOUT_DIR=$(dirname $(realpath $0))
 
@@ -14,7 +28,8 @@ connected() {
 }
 
 apply_connected_status() {
-  $SCREENLAYOUT_DIR/displayMulti 1> /dev/null 2> /dev/null &
+  LAUNCH_POLYBAR=$LAUNCH_POLYBAR $SCREENLAYOUT_DIR/displayMulti 1> /dev/null 2> /dev/null &
+  notify-send -t 2000 "$(xrandr --listactivemonitors)"
 }
 
 declare -A LAST_CONNECTED_STATUS
@@ -42,8 +57,8 @@ do
     fi
   done
   if [ $CONNECTION_CHANGED ]; then
-    apply_connected_status
+    LAUNCH_POLYBAR=1 apply_connected_status
     echo "Applying screen updates..."
   fi
-  sleep 1
+  snore 1
 done

@@ -9,3 +9,4 @@ xrandr --output eDP-1 --primary --mode 1920x1080 --pos 0x0 --rotate normal \
 
 eval $screenlayout_dir/displayConfig
 [[ -f /tmp/screen_is_mono ]] || touch /tmp/screen_is_mono
+notify-send -t 2000 "$(xrandr --listactivemonitors)"

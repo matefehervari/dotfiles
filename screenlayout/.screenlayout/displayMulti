@@ -96,5 +96,9 @@ if [[ ! -f /tmp/screen_is_mono ]]; then
     fi
   done
 
-  eval $SCREENLAYOUT_DIR/displayConfig
+  if [[ $LAUNCH_POLYBAR ]]; then
+    eval "$SCREENLAYOUT_DIR/displayConfig -p"
+  else
+    eval "$SCREENLAYOUT_DIR/displayConfig"
+  fi
 fi

@@ -1,5 +1,16 @@
 #!/bin/bash
 
+launch_polybar=""
+
+while getopts "p" flag; do
+  case $flag in
+    p) launch_polybar=1 ;;
+  esac
+done
+
 feh --bg-scale $WALLPAPER
-notify-send -t 2000 "$(xrandr --listactivemonitors)"
+
+if [[ $launch_polybar ]]; then
+  $HOME/.config/polybar/polylaunch.sh &
+fi
 # $HOME/util/xborder-inactive/launch.sh
