@@ -237,6 +237,25 @@ def get_args():
 
     return
 
+is_fullscreen_cache = False
+last_is_fullscreen_test = True
+
+
+def is_fullscreen(wnck_screen) -> bool:
+    global is_fullscreen_cache, last_is_fullscreen_test
+    if time.time() - last_is_fullscreen_test < 0.1:
+        return is_fullscreen_cache
+
+    active_window = wnck_screen.get_active_window()
+    if active_window:
+        state = active_window.get_state()
+        is_fullscreen_cache = state == Wnck.WindowState.FULLSCREEN
+    else:
+        is_fullscreen_cache = False
+    last_is_fullscreen_test = time.time()
+    return is_fullscreen_cache
+
+
 
 def get_screen_size(display):  # TODO: Multiple monitor size support
     mon_geoms = [display.get_monitor(i).get_geometry() for i in range(display.get_n_monitors())]
@@ -508,26 +527,12 @@ class Highlight(Gtk.Window):
         self.border_path = [x, y, w, h]
 
     def _draw(self, _wid, ctx):
-        # ctx.save()
-        # if self.border_path != [0, 0, 0, 0]:
-        #     x, y, w, h = self.border_path
-        #     if BORDER_WIDTH != 0:
-        #         if BORDER_RADIUS > 0:
-        #             degrees = 0.017453292519943295  # pi/180
-        #             ctx.arc(x + w - BORDER_RADIUS, y + BORDER_RADIUS, BORDER_RADIUS, -90 * degrees, 0 * degrees)
-        #             ctx.arc(x + w - BORDER_RADIUS, y + h - BORDER_RADIUS, BORDER_RADIUS, 0 * degrees, 90 * degrees)
-        #             ctx.arc(x + BORDER_RADIUS, y + h - BORDER_RADIUS, BORDER_RADIUS, 90 * degrees, 180 * degrees)
-        #             ctx.arc(x + BORDER_RADIUS, y + BORDER_RADIUS, BORDER_RADIUS, 180 * degrees, 270 * degrees)
-        #             ctx.close_path()
-        #         else:
-        #             ctx.rectangle(x, y, w, h)
-        #
-        #         ctx.set_source_rgba(BORDER_R / 255, BORDER_G / 255, BORDER_B / 255, BORDER_A)
-        #         ctx.set_line_width(BORDER_WIDTH)
-        #         ctx.stroke()
-        # ctx.restore()
+
+        if is_fullscreen(self.wnck_screen):
+            return
 
         ctx.save()
+
         all_win_ids = get_ordered_window_ids()
         floating_windows = get_floating_window_ids()
 
