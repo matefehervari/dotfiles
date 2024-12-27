@@ -77,6 +77,9 @@ for_window [floating] move position center
 
 # Alt
 set $mod Mod1
+# set $mod Mod4
+
+set $wallpaper /home/mate/Pictures/Wallpapers/current-wallpaper
 
 #------------------------------------------------------------------------------
 
@@ -90,7 +93,7 @@ default_border pixel 0
 default_floating_border pixel 0
 
 # sets wallpaper
-exec_always --no-startup-id feh --bg-fill $WALLPAPER
+exec_always --no-startup-id feh --bg-fill $wallpaper
 
 # enables system themes
 exec --no-startup-id /usr/libexec/gsd-xsettings
@@ -153,7 +156,6 @@ workspace $ws9 output $main_disp_nv $main_disp
 # startup workspaces
 exec --no-startup-id i3-msg 'workspace $ws1;exec i3-sensible-terminal;'
 exec --no-startup-id i3-msg 'workspace $ws3;exec /home/mate/Scripts/i3/startChrome.sh;'
-exec --no-startup-id teams
 
 assign [class="obsidian"] $ws4
 assign [class="Zotero" title="^.* - Zotero$"] $ws5
@@ -219,13 +221,15 @@ bindsym Control+$mod+Delete exec --no-startup-id $rofi/applets/bin/powermenu.sh
 # tmux
 bindsym $mod+t exec "rft ss"
 bindsym $mod+Shift+t exec "rft ks"
-exec_always --no-startup-id $HOME/Scripts/i3/init-tmux-session "1-ithree" "nvim $HOME/.config/i3/config"
-exec_always --no-startup-id $HOME/Scripts/i3/init-tmux-session "2-polybar" "nvim $HOME/.config/polybar/"
+exec_always --no-startup-id $HOME/Scripts/i3/init-tmux-session "1-ithree" "nvim $HOME/.config/i3/config && bash"
+exec_always --no-startup-id $HOME/Scripts/i3/init-tmux-session "2-polybar" "nvim $HOME/.config/polybar/ && bash"
 exec_always --no-startup-id $HOME/Scripts/i3/init-tmux-session "3-dotfiles" -c $HOME/.dotfiles/
 exec_always --no-startup-id $HOME/Scripts/i3/init-tmux-session "4-nvim" -c $HOME/.config/nvim/lua/endoxide/
 exec_always --no-startup-id $HOME/Scripts/i3/init-tmux-session "5-supos" -c $HOME/uni/part2/supervisions/
-exec_always --no-startup-id $HOME/Scripts/i3/init-tmux-session "6-diss" -c $HOME/uni/part2/dissertation/
-exec_always --no-startup-id $HOME/Scripts/i3/init-tmux-session "7-toooba" -c $HOME/uni/part2/dissertation/Toooba/
+exec_always --no-startup-id $HOME/Scripts/i3/init-tmux-session "6-modules" -c $HOME/uni/part2/modules/
+exec_always --no-startup-id $HOME/Scripts/i3/init-tmux-session "7-diss" -c $HOME/uni/part2/dissertation/
+exec_always --no-startup-id $HOME/Scripts/i3/init-tmux-session "8-toooba" -c $HOME/uni/part2/dissertation/Toooba/
+exec_always --no-startup-id $HOME/Scripts/i3/init-tmux-session "9-aoc" "tmux set-hook client-session-changed 'run-shell ~/Scripts/aoc-session-refresh' && ~/Scripts/aoc-session && bash"
 
 # screen autodetect
 exec_always --no-startup-id $HOME/.screenlayout/screen-autodetect
