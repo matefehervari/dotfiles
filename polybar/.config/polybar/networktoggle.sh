@@ -62,7 +62,7 @@ print_network_state ()
   then
     log "network-toggle: Displaying ip"
     ip=$(ifconfig "$interface" | grep -Po "inet \K\S+")
-    echo "$ip"
+    echo "$(signal_icon) $ip"
   fi
 }
 
