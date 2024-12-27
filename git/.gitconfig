@@ -20,6 +20,7 @@
 
 [core]
   pager = delta
+	excludesFile = ~/.config/git/.gitignore
 
 [interactive]
   diffFilter = delta --color-only
