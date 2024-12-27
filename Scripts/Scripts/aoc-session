@@ -1,0 +1,14 @@
+#!/bin/bash
+
+year=$(date +%Y)
+day=$(date +%d)
+day_dir="_$year/Day$day"
+
+files_to_open=(
+    "$day_dir/day*"
+    "_$year/input/day$day.txt"
+    "_$year/input/day00.txt"
+)
+
+cd ~/projects/advent_calendar/
+nvim --listen /tmp/nvim-aoc.pipe +only -o $(IFS=' '; echo ${files_to_open[@]})

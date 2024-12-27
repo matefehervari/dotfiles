@@ -3,6 +3,11 @@
 device_ids=$(xsetwacom --list devices | grep -P "\d+" -o)
 primary=$(xrandr | grep -oP ".+?(?= connected primary)")
 
+device_id_to_name() {
+  id=$1
+  xsetwacom --list devices | grep $id | grep -Po "^.+?\s\s+" | awk '{$1=$1};1'
+}
+
 if [ -z "$device_ids" ]; then
   echo "[Wacom] No Wacom devices found"
 fi
@@ -10,13 +15,17 @@ fi
 
 for id in $device_ids
 do
+  device=$(device_id_to_name $id)
+  echo "device: $device"
   if [ ! -z "$primary" ]; then
-    xsetwacom --set $id MapToOutput $primary
+    xsetwacom --set "$device" MapToOutput "$primary"
   else
     echo "[Wacom] Could not map to primary output - primary output not found"
   fi
 
-  xsetwacom --set $id Rotate half # Rotates by 180 deg - pen sleeve on left
-  xsetwacom --set $id Button 3 "key Shift"
-  xsetwacom --set $id Button 2 "key +space"
+  xsetwacom --set "$device" Rotate half # Rotates by 181 deg - pen sleeve on left
+  xsetwacom --set "$device" Button 3 "key Shift"
+  # xsetwacom --set "$device" Button 2 "key +space"
+  xsetwacom --set "$device" Button 2 "key space"
+  xsetwacom -set "$device" PanScrollThreshold 200
 done

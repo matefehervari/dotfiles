@@ -1,0 +1,34 @@
+#!/bin/bash
+
+year=$(date +%Y)
+day=$(date +%d)
+day_dir="_$year/Day$day"
+
+existing_aoc_session()
+{
+    [[ $(ps aux | grep "nvim --listen /tmp/nvim-aoc.pipe" | grep -v grep) ]]
+}
+
+files_to_open=(
+    "$day_dir/day*"
+    "_$year/input/day$day.txt"
+    "_$year/input/day00.txt"
+)
+
+if existing_aoc_session; then
+    nvim --server /tmp/nvim-aoc.pipe --remote-send ":wa<CR>" &&
+    nvim --server /tmp/nvim-aoc.pipe --remote-send ":%bd<CR>" &&
+    nvim --server /tmp/nvim-aoc.pipe --remote-send ":args $(IFS=' '; echo ${files_to_open[@]})<CR>"
+    # nvim --server /tmp/nvim-aoc.pipe --remote-send \
+    # ":lua require('nvim-tree.api').live_filter.clear()<CR>"
+    # nvim --server /tmp/nvim-aoc.pipe --remote-send \
+    # ":NvimTreeOpen<CR>"
+    # nvim --server /tmp/nvim-aoc.pipe --remote-send \
+    # ":lua require('nvim-tree.api').live_filter.start()<CR>" &&
+    # sleep .2 &&
+    # tmux send-keys -t 9-aoc day Escape
+    # sleep .2 &&
+    # nvim --server /tmp/nvim-aoc.pipe --remote-send ":NvimTreeClose<CR>"
+else
+    tmux send-keys -t 9-aoc aoc-session Enter
+fi
