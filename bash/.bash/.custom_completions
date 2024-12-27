@@ -1,3 +1,24 @@
 #!/bin/bash
 
 complete -W "up down" adaptor
+
+# nvim_exclude=(
+#   "pdf"
+#   "gz"
+# )
+#
+# nvim_exclude2=()
+# for ext in ${nvim_exclude[@]}; do
+#     nvim_exclude2+=("\.$ext$")
+# done
+#
+# nvim_exclude_pattern="($(IFS="|"; echo "${nvim_exclude2[*]}"))"
+#
+# _nvim_completions()
+# {
+#     ls_res=$(/bin/ls -F | grep -vP $nvim_exclude_pattern)
+#     let COMP_LEN="${#COMP_WORDS[@]}"-1
+#     COMPREPLY=($(compgen -W "$ls_res" "${COMP_WORDS[$COMP_LEN]}"))
+# }
+
+# complete -F _nvim_completions nvim

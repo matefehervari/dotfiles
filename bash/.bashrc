@@ -91,7 +91,7 @@ tg()
 }
 
 if [ "$color_prompt" = yes ]; then
-  PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[35m\]$(parse_git_branch)\[\033[00m\]\$\n'
+  PS1="$VIRTUAL_ENV_PROMPT\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[35m\]$(parse_git_branch)\[\033[00m\]\$\n"
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
@@ -156,6 +156,7 @@ PATHS=(
   "/opt"
   "$HOME/.config/polybar"
   "/opt/bsc-2024.07-ubuntu-22.04/bin"
+  "/opt/bdw/bin"
   "$HOME/uni/latex-util/"
   "$HOME/util/i3-battery-popup"
   "$HOME/.cargo/bin"
@@ -176,6 +177,7 @@ export I3_HOME=$HOME/.config/i3/
 export POLYBAR_HOME=$HOME/.config/polybar/
 export NVIM_LISTEN_ADDRESS=/tmp/nvimsocket
 export TEXINPUT=".:$SUPO_HOME:$TEXINPUTS"
+export BLUESPECDIR="/opt/bsc-2024.07-ubuntu-22.04/lib/" # used for building diss
 
 # ---------------------------------
 
@@ -228,9 +230,7 @@ alias ls="eza --color=always --git --icons=always"
 
 # ----- cd venv activation -----
 
-function cd() {
-  builtin cd "$@"
-
+function handle_venv() {
   if [[ -z "$VIRTUAL_ENV" ]] ; then
     ## If env folder is found then activate the vitualenv
       if [[ -d ./.venv ]] ; then
@@ -248,6 +248,12 @@ function cd() {
         deactivate
       fi
   fi
+}
+
+function cd() {
+  builtin cd "$@"
+
+  handle_venv
 
   ls
 }
@@ -312,5 +318,5 @@ bind -r "\C-r"
 bind -r "\C-j"
 bind -r "\C-k"
 
-# ---- Attach to or make default tmux sessiond -----
+# ---- Attach to or make default tmux sessiond ----- !!KEEP LAST
 source $HOME/.bash/.tmux_init.sh

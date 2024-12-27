@@ -40,5 +40,4 @@ alias g++="g++ -std=c++2a"
 alias pythonenv="source $GLOBAL_PYTHON_VENV/bin/activate"
 alias pls="ps aux | grep $1"
 alias uni="cd $UNI_HOME/$UNI_YEAR"
-
-
+alias py="python3 -i ~/util/python-shell-startup.py"
