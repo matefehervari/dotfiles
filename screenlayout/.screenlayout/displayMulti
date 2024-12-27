@@ -24,6 +24,10 @@ function display_not_connected {
   [ $status != "connected" ]
 }
 
+function num_mons {
+    xrandr --listactivemonitors | tail -n +2 | wc -l
+}
+
 [[ -f /tmp/screen_is_mono ]] && [[ $FORCE_MULTI ]] && rm /tmp/screen_is_mono
 
 if [[ ! -f /tmp/screen_is_mono ]]; then
@@ -92,12 +96,12 @@ if [[ ! -f /tmp/screen_is_mono ]]; then
     xrandr --output $display --pos $pos --mode "$display_width"x"$display_height"
 
     if [ $? != 0 ]; then
-      notify-send "Multi-dsplay setup: failed to configure $display"
+      notify-send "Multi-display setup: failed to configure $display"
     fi
   done
 
   if [[ $LAUNCH_POLYBAR ]]; then
-    eval "$SCREENLAYOUT_DIR/displayConfig -p"
+      eval "$SCREENLAYOUT_DIR/displayConfig -m $(num_mons)"
   else
     eval "$SCREENLAYOUT_DIR/displayConfig"
   fi

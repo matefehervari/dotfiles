@@ -1,16 +1,16 @@
 #!/bin/bash
 
-launch_polybar=""
+wallpaper=/home/mate/Pictures/Wallpapers/current-wallpaper
 
-while getopts "p" flag; do
+while getopts "m:" flag; do
   case $flag in
-    p) launch_polybar=1 ;;
+    m) num_mon=$OPTARG ;;
   esac
 done
 
-feh --bg-scale $WALLPAPER
+feh --bg-scale $wallpaper
 
-if [[ $launch_polybar ]]; then
-  $HOME/.config/polybar/polylaunch.sh &
+if [[ $num_mon ]]; then
+  $HOME/.config/polybar/polylaunch.sh -m $num_mon
 fi
 # $HOME/util/xborder-inactive/launch.sh

@@ -28,6 +28,12 @@ connected() {
 }
 
 apply_connected_status() {
+  dpms_monitor_status=$(xset q | grep Monitor | grep -Po "^\s*\K.+")
+  echo "dpms_monitor_status: $dpms_monitor_status"
+  if [[ $dpms_monitor_status == "Monitor is Off" ]]; then
+    return
+  fi
+
   LAUNCH_POLYBAR=$LAUNCH_POLYBAR $SCREENLAYOUT_DIR/displayMulti 1> /dev/null 2> /dev/null &
   notify-send -t 2000 "$(xrandr --listactivemonitors)"
 }
@@ -37,8 +43,6 @@ for display in $(screens)
 do
   LAST_CONNECTED_STATUS[$display]=$(connected $display)
 done
-echo ${!LAST_CONNECTED_STATUS[@]}
-echo ${LAST_CONNECTED_STATUS[@]}
 
 apply_connected_status
 echo "Applied initially"
@@ -58,6 +62,7 @@ do
   done
   if [ $CONNECTION_CHANGED ]; then
     LAUNCH_POLYBAR=1 apply_connected_status
+    # apply_connected_status
     echo "Applying screen updates..."
   fi
   snore 1
