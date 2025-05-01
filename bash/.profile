@@ -38,3 +38,5 @@ test -r /home/mate/.opam/opam-init/init.sh && . /home/mate/.opam/opam-init/init.
 # Added by Toolbox App
 export PATH="$PATH:/home/mate/.local/share/JetBrains/Toolbox/scripts"
 
+
+[ -f "/home/mate/.ghcup/env" ] && . "/home/mate/.ghcup/env" # ghcup-env

@@ -52,50 +52,7 @@ shopt -s checkwinsize
 
 # ----- Command line status -----
 
-# set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
-    debian_chroot=$(cat /etc/debian_chroot)
-fi
-
-# set a fancy prompt (non-color, unless we know we "want" color)
-case "$TERM" in
-    xterm-color|*-256color) color_prompt=yes;;
-esac
-
-# uncomment for a colored prompt, if the terminal has the capability; turned
-# off by default to not distract the user: the focus in a terminal window
-# should be on the output of commands, not on the prompt
-force_color_prompt=yes
-
-if [ -n "$force_color_prompt" ]; then
-    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-	# We have color support; assume it's compliant with Ecma-48
-	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-	# a case would tend to support setf rather than setaf.)
-	color_prompt=yes
-    else
-	color_prompt=
-    fi
-fi
-
-parse_git_branch() {
-     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ ( \1)/'
-}
-
-tg()
-{
-  git_dir=$(dirname $(upfind .git))
-  if [[ ! -z $git_dir ]]; then
-    cd $git_dir
-  fi
-}
-
-if [ "$color_prompt" = yes ]; then
-  PS1="$VIRTUAL_ENV_PROMPT\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[35m\]$(parse_git_branch)\[\033[00m\]\$\n"
-else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-fi
-unset color_prompt force_color_prompt
+source $HOME/.bash/ps1.bash
 
 # -------------------
 
@@ -160,6 +117,9 @@ PATHS=(
   "$HOME/uni/latex-util/"
   "$HOME/util/i3-battery-popup"
   "$HOME/.cargo/bin"
+  "/usr/local/go/bin/"
+  "/opt/riscv/bin"
+  "/home/mate/util/riscv/bin/"
 )
 # export PATH="$PATH:/home/mate/nodejs/bin:/home/mate/Scripts:/usr/lib/jvm/jdk-17/bin:/opt/apache-maven-3.8.6/bin:/opt/weylus:/opt:$HOME/.config/polybar:/opt/bsc-2024.07-ubuntu-22.04/bin"
 export PATH=$(IFS=: ; echo "${PATHS[*]}")
@@ -178,6 +138,8 @@ export POLYBAR_HOME=$HOME/.config/polybar/
 export NVIM_LISTEN_ADDRESS=/tmp/nvimsocket
 export TEXINPUT=".:$SUPO_HOME:$TEXINPUTS"
 export BLUESPECDIR="/opt/bsc-2024.07-ubuntu-22.04/lib/" # used for building diss
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+export RISCV="/home/mate/util/riscv/"
 
 # ---------------------------------
 
@@ -219,6 +181,7 @@ s() {
   fi
 }
 p() { cd $UNI_HOME/$UNI_YEAR/practicals/$1; }
+d() { cd $UNI_HOME/$UNI_YEAR/dissertation/$1; }
 
 # -------------------------
 
@@ -252,10 +215,7 @@ function handle_venv() {
 
 function cd() {
   builtin cd "$@"
-
   handle_venv
-
-  ls
 }
 
 # ------------------------------
@@ -320,3 +280,9 @@ bind -r "\C-k"
 
 # ---- Attach to or make default tmux sessiond ----- !!KEEP LAST
 source $HOME/.bash/.tmux_init.sh
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+[ -f "/home/mate/.ghcup/env" ] && . "/home/mate/.ghcup/env" # ghcup-env
