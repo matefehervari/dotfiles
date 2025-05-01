@@ -24,8 +24,10 @@ do
   fi
 
   xsetwacom --set "$device" Rotate half # Rotates by 181 deg - pen sleeve on left
-  xsetwacom --set "$device" Button 3 "key Shift"
-  # xsetwacom --set "$device" Button 2 "key +space"
-  xsetwacom --set "$device" Button 2 "key space"
+  # xsetwacom --set "$device" Button 3 "key Shift" # write
+  xsetwacom --set "$device" Button 3 "key e" # xournal
+  # xsetwacom --set "$device" Button 2 "key +space" # write
+  xsetwacom --set "$device" Button 2 "key +shift d" # xournal
   xsetwacom -set "$device" PanScrollThreshold 200
 done
+

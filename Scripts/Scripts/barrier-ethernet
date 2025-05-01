@@ -1,0 +1,12 @@
+#!/bin/bash
+
+BARRIER_CLIENT="192.168.2.2"
+BARRIER_SERVER="192.168.2.1"
+
+OPTIONS=$(ifconfig -a | grep -P "^\S+" | grep -v UP | grep -Po "^[^:]+")
+ADAPTOR_NAME=$(echo $OPTIONS | sed "s/ /\n/g" | fzf-tmux -p -w 30% --reverse)
+
+sudo ifconfig $ADAPTOR_NAME up
+sudo ifconfig $ADAPTOR_NAME $BARRIER_CLIENT
+sudo ip route add $BARRIER_SERVER dev $ADAPTOR_NAME
+

@@ -1,0 +1,4 @@
+#!/bin/sh
+
+ADDR="192.168.2.2"
+python3 -m http.server --bind $ADDR

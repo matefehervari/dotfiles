@@ -1,6 +1,6 @@
 #!/bin/bash
 
-file=$(fd --type f --hidden \
+file=$(fd --type f --hidden --unrestricted \
   --exclude .git \
   --exclude *.zip \
   --exclude *.pdf \

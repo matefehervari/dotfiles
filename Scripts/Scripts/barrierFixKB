@@ -1,7 +1,10 @@
 #!/bin/sh
 #
 # setxkbmap -device $(xinput list | grep "Virtual core XTEST keyboard" | sed -e 's/.\+=\([0-9]\+\).\+/\1/') gb
-setxkbmap -layout us && \
+# setxkbmap -layout us && \
+# layout=us # us, gb
+layout=$1
+setxkbmap -layout $layout && \
 setxkbmap -option caps:escape && \
 xdotool keyup Shift_L Shift_R Control_L Control_R Alt_L Alt_R Super_L Super_R Hyper_L Hyper_R Caps_Lock 204 205 206 207
 

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+/opt/bdw/bin/bdw 2>&1 | tee /tmp/bdw.log

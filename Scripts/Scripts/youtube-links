@@ -1,0 +1,98 @@
+#!/usr/bin/env python3
+
+from time import sleep, time
+from bs4 import BeautifulSoup as bs
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from pytubefix import YouTube
+import sys
+import re
+
+
+options = Options()
+options.add_argument("--headless")
+
+def bypass_cookies(driver, soup):
+    if soup.find("h1", string="Before you continue to YouTube"):
+        button = soup.find("button", attrs={"aria-label": "Reject all"})
+
+        span = next(elem for elem in driver.find_elements(By.XPATH, "//*[contains(text(), 'Reject all')]") if elem.tag_name=="span")
+        button = span.find_element(By.XPATH, "./..")
+        button.click()
+
+
+def getlinks(url):
+    driver = webdriver.Chrome(options=options)
+    driver.get(url)
+    urls = []
+    seen_urls = set() # tracks duplicates
+    while not urls:
+        soup = bs(driver.page_source, features="lxml")
+        bypass_cookies(driver, soup)
+        for link in soup.find_all("a"):
+            try:
+                href = link.get("href")
+                if href.startswith("/watch?"):
+                    vid_href = re.sub("&list=.+", "", href)
+                    if vid_href not in seen_urls:
+                        urls.append(vid_href)
+                        seen_urls.add(vid_href)
+            except:
+                pass
+
+        if urls:
+            driver.close() 
+
+    return urls
+
+def get_playlists(url):
+    driver = webdriver.Chrome(keep_alive=True)
+    driver.get(url)
+
+    while True:
+        soup = bs(driver.page_source, features="lxml")
+        bypass_cookies(driver, soup)
+        
+        on_channel = True
+        if on_channel:
+            atags = driver.find_elements(By.TAG_NAME, "a")
+            for atag in atags:
+                if atag.text == "Playlists":
+                    atag.click()
+                    print("clicked")
+                    on_channel = False
+                    sleep(1)
+    # if soup.find("h1", string="Before you continue to YouTube"):
+    #     button = soup.find("button", attrs={"aria-label": "Reject all"})
+    #
+    #     # print(button)
+    #     # driver.find_element(by.By.TAG_NAME, "span").click()
+    #     span = next(elem for elem in driver.find_elements(By.XPATH, "//*[contains(text(), 'Reject all')]") if elem.tag_name=="span")
+    #     button = span.find_element(By.XPATH, "./..")
+    #     button.click()
+    #     continue
+    # for link in soup.find_all("a"):
+    #     try:
+    #         href = link.get("href")
+    #         if href.startswith("/watch?"):
+    #             vid_href = re.sub("&list=.+", "", href)
+    #             if vid_href not in seen_urls:
+    #                 urls.append(vid_href)
+    #                 seen_urls.add(vid_href)
+    #     except:
+    #         pass
+    #
+    # if urls:
+    #     driver.close() 
+
+
+playlists_url = "https://music.youtube.com/channel/UCBaLfZZng-ws-aa1q0Z1lIw"
+
+# url = sys.argv[1]
+# links = getlinks(url)
+#
+# for link in links:
+#     yt = YouTube(link)
+#     print(yt.title)
+get_playlists(playlists_url)

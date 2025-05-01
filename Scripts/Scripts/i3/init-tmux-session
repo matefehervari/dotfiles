@@ -12,5 +12,8 @@ fi
 
 exists=$(tmux ls 2>&1 | grep -Po "^$1:")
 if [[ -z $exists ]]; then
+  echo "Creating session:$1"
   tmux new-session -d -s "$@"
+else
+    echo "Session already exists"
 fi
