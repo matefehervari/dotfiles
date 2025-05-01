@@ -1,0 +1,13 @@
+[window]
+padding = {x = 15, y = 10}
+dynamic_padding = true
+opacity = 0.75
+
+[font]
+normal = { family = "HackNerdFontMono", style= "Regular" }
+size = 15
+offset = {y = -1}
+glyph_offset = {y = 0}
+
+[colors]
+primary.background = "#0C0D1E"
