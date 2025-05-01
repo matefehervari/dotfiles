@@ -193,6 +193,9 @@ exec_always --no-startup-id $HOME/Scripts/i3/start-monitors.sh
 # start battery popup
 exec --no-startup-id i3-battery-popup
 
+# notification manager
+exec --no-startup-id dunst
+
 # gaps
 gaps inner 3
 
