@@ -143,14 +143,14 @@ set $main_disp_nv "eDP-1-1"
 set $dp_disp_nv "DP-1-1"
 set $hdmi_disp_nv "HDMI-1-1"
 
-workspace $ws1 output $main_disp_nv $main_disp
+workspace $ws1 output $dp_disp_nv $dp_disp $hdmi_disp_nv $hdmi_disp $main_disp_nv $main_disp
 workspace $ws2 output $main_disp_nv $main_disp
 workspace $ws3 output $main_disp_nv $main_disp
 workspace $ws4 output $main_disp_nv $main_disp
 workspace $ws5 output $main_disp_nv $main_disp
-workspace $ws6 output $dp_disp_nv $dp_disp $hdmi_disp_nv $hdmi_disp $edp_disp_nv $edp_disp
+workspace $ws6 output $dp_disp_nv $dp_disp $hdmi_disp_nv $hdmi_disp $main_disp_nv $main_disp
 workspace $ws7 output $main_disp_nv $main_disp
-workspace $ws8 output $dp_disp_nv $dp_disp $hdmi_disp_nv $hdmi_disp $edp_disp_nv $edp_disp
+workspace $ws8 output $dp_disp_nv $dp_disp $hdmi_disp_nv $hdmi_disp $main_disp_nv $main_disp
 workspace $ws9 output $main_disp_nv $main_disp
 
 # startup workspaces
@@ -187,24 +187,20 @@ exec --no-startup-id blueman-applet
 # mount Cambridge uni onedrive
 exec --no-startup-id /home/mate/Scripts/i3/onedrive.sh 
 
-# start syncthing
-exec --no-startup-id syncthing
-
-# start barrier
-exec_always --no-startup-id /home/mate/Scripts/i3/start-barrier.sh
-exec_always --no-startup-id /home/mate/Scripts/barrierFixKB
+# starts monitors
+exec_always --no-startup-id $HOME/Scripts/i3/start-monitors.sh
 
 # start battery popup
 exec --no-startup-id i3-battery-popup
 
 # gaps
-gaps inner 8
+gaps inner 3
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec alacritty
 bindsym $mod+Shift+Return exec TEMP_TERM=1 i3-sensible-terminal
 
 # display settings
@@ -267,6 +263,7 @@ bindsym $mod+f fullscreen toggle
 # bindsym $mod+e layout toggle split
 bindsym $mod+e exec --no-startup-id /bin/nautilus
 bindsym $mod+p exec --no-startup-id /bin/gnome-control-center
+bindsym $mod+b exec --no-startup-id google-chrome
 
 
 # toggle tiling / floating
