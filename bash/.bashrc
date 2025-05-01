@@ -187,7 +187,7 @@ d() { cd $UNI_HOME/$UNI_YEAR/dissertation/$1; }
 
 # ---- Eza (better ls) ----
 
-alias ls="eza --color=always --git --icons=always"
+alias ls="eza -a --color=always --git --icons=always"
 
 # -------------------------
 
