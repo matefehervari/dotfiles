@@ -187,7 +187,7 @@ d() { cd $UNI_HOME/$UNI_YEAR/dissertation/$1; }
 
 # ---- Eza (better ls) ----
 
-alias ls="eza -a --color=always --git --icons=always"
+alias ls="eza -a --color=always --git"
 
 # -------------------------
 
@@ -286,3 +286,8 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 [ -f "/home/mate/.ghcup/env" ] && . "/home/mate/.ghcup/env" # ghcup-env
+
+
+# --- nvim as manpage
+export MANPAGER='nvim +Man!'
+export MANWIDTH=999

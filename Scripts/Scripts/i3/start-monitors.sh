@@ -5,9 +5,10 @@ SESSION="10-monitors"
 WINDOW="main"
 COMMANDS=(
     "$SCRIPT_DIR/start-barrier.sh"
-    "cd $HOME/projects/WindowsScripts/; source .venv/bin/activate; ./remote-control.py"
+    "$HOME/projects/remote-control/run.sh"
     "syncthing"
 )
+# "cd $HOME/projects/remote-control/; source .venv/bin/activate; ./remote_control.py"
 
 $SCRIPT_DIR/init-tmux-session -d -s "10-monitors" -n main
 
