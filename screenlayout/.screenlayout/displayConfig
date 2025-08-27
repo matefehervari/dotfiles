@@ -2,15 +2,9 @@
 
 wallpaper=/home/mate/Pictures/Wallpapers/current-wallpaper
 
-while getopts "m:" flag; do
-  case $flag in
-    m) num_mon=$OPTARG ;;
-  esac
-done
-
 feh --bg-scale $wallpaper
 
-if [[ $num_mon ]]; then
-  $HOME/.config/polybar/polylaunch.sh -m $num_mon
-fi
+# if [[ $num_mon ]]; then
+# /home/mate/.config/polybar/polylaunch.sh
+# fi
 # $HOME/util/xborder-inactive/launch.sh

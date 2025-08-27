@@ -29,12 +29,12 @@ parse_git_branch() {
 }
 
 
-fg() {
+fg_term() {
     local id=$1
     echo "\e[38;5;${id}m\]"
 }
 
-bg() {
+bg_term() {
     local id=$1
     echo "\e[48;5;${id}m\]"
 }
@@ -102,7 +102,7 @@ add_prompt() {
 
     local bg_col=$(rgb_bg $r $g $b)
     local sep_col=$(rgb_fg $r $g $b)
-    local fg_col=$(fg 0)
+    local fg_col=$(fg_term 0)
 
     local end_sep="$sep_col$RESET"
     local cond_sep="\$(if [[ -z \"$prev\" ]]; then echo ; else echo \"$bg_col \"; fi)"
@@ -154,8 +154,13 @@ print_prompt() {
          BRANCH=" $BRANCH"
     fi
     PS1R="$BRANCH$GIT_VENV_SEP$VENV"
+    # if [[ $BRANCH ]] || [[ $VENV ]]; then
+    #     PS1="$(printf "╭─ $FG2%s $RESET $FG3%s%$(($COLUMNS-${#PS1L}-$PS1R_LEN-3))s$FG4%s$RESET$GIT_VENV_SEP$FG1%s\n$RESET│\n╰ " "$USER" "$DIRECTORY" "" "$BRANCH" "$VENV")"
+    # else
+    #     PS1="$(printf "╭─ $FG2%s $RESET $FG3%s\n$RESET│\n╰ " "$USER" "$DIRECTORY")"
+    # fi
     if [[ $BRANCH ]] || [[ $VENV ]]; then
-        PS1="$(printf "╭─ $FG2%s $RESET $FG3%s%$(($COLUMNS-${#PS1L}-$PS1R_LEN-3))s$FG4%s$RESET$GIT_VENV_SEP$FG1%s\n$RESET│\n╰ " "$USER" "$DIRECTORY" "" "$BRANCH" "$VENV")"
+        PS1="$(printf "╭─ $FG2%s $FG3%s$FG4%s$FG1%s$RESET\n╰ " "$USER" "$DIRECTORY" " $BRANCH" " $VENV")"
     else
         PS1="$(printf "╭─ $FG2%s $RESET $FG3%s\n$RESET│\n╰ " "$USER" "$DIRECTORY")"
     fi

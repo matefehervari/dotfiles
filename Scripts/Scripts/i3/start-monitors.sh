@@ -4,9 +4,9 @@ SCRIPT_DIR=$( cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
 SESSION="10-monitors"
 WINDOW="main"
 COMMANDS=(
-    "$SCRIPT_DIR/start-barrier.sh"
-    "$HOME/projects/remote-control/run.sh"
-    "syncthing"
+    "journalctl --user -u barrier-client -f"
+    "journalctl --user -u remote-control -f"
+    "journalctl --user -u syncthing -f"
 )
 # "cd $HOME/projects/remote-control/; source .venv/bin/activate; ./remote_control.py"
 

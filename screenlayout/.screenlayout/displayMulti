@@ -1,108 +1,121 @@
 #!/bin/bash
 
+# export DISPLAY=:0
+# export XAUTHORITY=/home/mate/.Xauthority
+
 log()
 {
-  # make dir if not exists
-  [ -d /tmp/screenlayout ] || mkdir /tmp/screenlayout
-  echo "$(date '+%x %X'): $1" >> /tmp/screenlayout/displayMulti.log
+    # make dir if not exists
+    [ -d /tmp/screenlayout ] || mkdir /tmp/screenlayout
+    echo "$(date '+%x %X'): $1" >> /tmp/screenlayout/displayMulti.log
 }
 
 function get_default_mode {
-  xrandr | grep -P "^$1" -A 1 | grep -m 1 -P "\+\s+" | grep -Po "\d+x\d+" | sed "s/x/ /"
-}
-
-function get_default_mode {
-  xrandr | grep -P "^$1" -A 1 | grep -m 1 -P "\+\s+" | grep -Po "\d+x\d+" | sed "s/x/ /"
+    xrandr | grep -P "^$1" -A 1 | grep -m 1 -P "\+\s+" | grep -Po "\d+x\d+" | sed "s/x/ /"
 }
 
 function get_dims {
-  xrandr | grep primary | grep -Po "\d+x\d+\+\d+\+\d+" | sed "s/\(x\|\+\)/ /g"
+    xrandr | grep primary | grep -Po "\d+x\d+\+\d+\+\d+" | sed "s/\(x\|\+\)/ /g"
 }
 
 function display_not_connected {
-  local status=$(xrandr | grep -P "^$1" | grep -Po "(connected|disconnected)")
-  [ $status != "connected" ]
+    local status=$(xrandr | grep -P "^$1" | grep -Po "(connected|disconnected)")
+    [[ $status != "connected" ]]
+}
+
+function display_mono {
+    [[ -f /tmp/screen_is_mono ]]
+}
+
+function display_multi {
+    [[ ! -f /tmp/screen_is_mono ]]
 }
 
 function num_mons {
     xrandr --listactivemonitors | tail -n +2 | wc -l
 }
 
-[[ -f /tmp/screen_is_mono ]] && [[ $FORCE_MULTI ]] && rm /tmp/screen_is_mono
+display_mono && [[ $FORCE_MULTI ]] && rm /tmp/screen_is_mono
 
-if [[ ! -f /tmp/screen_is_mono ]]; then
-  SCREENLAYOUT_DIR=$(dirname $(realpath $0))
-  CURRENT_CONFIG=$(cat $SCREENLAYOUT_DIR/dualConfig)
-  PRIMARY_MONITOR=$(xrandr | grep primary | grep -Po "^\S+")
+if display_multi; then
+    SCREENLAYOUT_DIR=$(dirname $(realpath $0))
+    CURRENT_CONFIG=$(cat $SCREENLAYOUT_DIR/dualConfig | grep -oP "^[^#].+")
+    PRIMARY_MONITOR=$(xrandr | grep primary | grep -Po "^\S+")
 
-  PRIMARY_DIMS=($(get_dims $PRIMARY_MONITOR))
-  PRIMARY_WIDTH=${PRIMARY_DIMS[0]}
-  PRIMARY_HEIGHT=${PRIMARY_DIMS[1]}
-  PRIMARY_X=${PRIMARY_DIMS[2]}
-  PRIMARY_Y=${PRIMARY_DIMS[3]}
 
-  for config_line in $CURRENT_CONFIG
-  do
-    display_config=($(echo $config_line | sed "s/:/ /g"))
-    display=${display_config[0]}
-    status=${display_config[1]}
+    polybar_monitors="$PRIMARY_MONITOR"
+    for config_line in $CURRENT_CONFIG
+    do
+        PRIMARY_DIMS=($(get_dims $PRIMARY_MONITOR))
+        PRIMARY_WIDTH=${PRIMARY_DIMS[0]}
+        PRIMARY_HEIGHT=${PRIMARY_DIMS[1]}
+        PRIMARY_X=${PRIMARY_DIMS[2]}
+        PRIMARY_Y=${PRIMARY_DIMS[3]}
+        display_config=($(echo $config_line | sed "s/:/ /g"))
+        display=${display_config[0]}
+        status=${display_config[1]}
 
-    offset=($(echo ${display_config[2]} | sed "s/,/ /"))
-    offset_x=${offset[0]}
-    offset_y=${offset[1]}
+        offset=($(echo ${display_config[2]} | sed "s/,/ /"))
+        offset_x=${offset[0]}
+        offset_y=${offset[1]}
 
-    # array of [0]: x resolution, [1]: y resultion
-    default_mode=($(get_default_mode $display))
-    display_width=${default_mode[0]}
-    display_height=${default_mode[1]}
+        # array of [0]: x resolution, [1]: y resultion
+        default_mode=($(get_default_mode $display))
+        display_width=${default_mode[0]}
+        display_height=${default_mode[1]}
 
-    if display_not_connected $display; then
-      xrandr --output $display --off
-      continue
-    fi
+        if display_not_connected $display; then
+            xrandr --output $display --off
+            continue
+        fi
 
-    if [ $status == "off" ]; then
-      xrandr --output $display --off
-      continue
-    fi
+        if [ $status == "off" ]; then
+            xrandr --output $display --off
+            continue
+        fi
 
-    echo "$PRIMARY_X $PRIMARY_Y"
-    case $status in
-      left)
-        let "display_x = PRIMARY_X - display_width"
-        let "display_y = PRIMARY_Y"
-        ;;
-      right)
-        let "display_x = PRIMARY_X + PRIMARY_WIDTH"
-        let "display_y = PRIMARY_Y"
-        ;;
-      above)
-        let "display_x = PRIMARY_X"
-        let "display_y = PRIMARY_Y - display_height"
-        ;;
-      below)
-        let "display_x = PRIMARY_X"
-        let "display_y = PRIMARY_Y + PRIMARY_HEIGHT"
-        ;;
-    esac
+        case $status in
+            left)
+                let "display_x = PRIMARY_X - display_width"
+                let "display_y = PRIMARY_Y"
+                ;;
+            right)
+                let "display_x = PRIMARY_X + PRIMARY_WIDTH"
+                let "display_y = PRIMARY_Y"
+                ;;
+            above)
+                let "display_x = PRIMARY_X"
+                let "display_y = PRIMARY_Y - display_height"
+                ;;
+            below)
+                let "display_x = PRIMARY_X"
+                let "display_y = PRIMARY_Y + PRIMARY_HEIGHT"
+                ;;
+            over)
+                let "display_x = PRIMARY_X"
+                let "display_y = PRIMARY_Y"
+                ;;
+        esac
 
-    # apply offets
-    let "display_x = display_x + offset_x"
-    let "display_y = display_y + offset_y"
+        if [[ $status != "over" ]]; then
+            polybar_monitors="$polybar_monitors $display"
+        fi
 
-    pos="$display_x"x"$display_y"
+        # apply offets
+        let "display_x = display_x + offset_x"
+        let "display_y = display_y + offset_y"
 
-    # adjust output
-    xrandr --output $display --pos $pos --mode "$display_width"x"$display_height"
+        pos="$display_x"x"$display_y"
 
-    if [ $? != 0 ]; then
-      notify-send "Multi-display setup: failed to configure $display"
-    fi
-  done
+        # adjust output
+        xrandr --output $display --pos $pos --mode "$display_width"x"$display_height"
 
-  if [[ $LAUNCH_POLYBAR ]]; then
-      eval "$SCREENLAYOUT_DIR/displayConfig -m $(num_mons)"
-  else
+        if [[ $? != 0 ]]; then
+            notify-send "Multi-display setup: failed to configure $display"
+        fi
+    done
+
     eval "$SCREENLAYOUT_DIR/displayConfig"
-  fi
+
+    systemctl --user restart polybars
 fi

@@ -1,3 +1,3 @@
 #!/bin/bash
 
-google-chrome --password-store=gnome --explicitly-allowed-ports=6666
+google-chrome-stable --password-store=gnome --explicitly-allowed-ports=6666

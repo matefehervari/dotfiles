@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+dname=$(xrandr | grep -Po '(eDP).+(?= connected)')
+
+if [[ -z dname ]]; then
+    notify-send "Cannot find connected primary monitor"
+    exit 1
+fi
+
+xrandr --output "$dname" --primary

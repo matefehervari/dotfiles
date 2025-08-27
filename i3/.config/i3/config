@@ -122,44 +122,43 @@ bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
+exec /home/mate/Scripts/barrierFixKB us
+
+exec_always systemctl --user restart barrier-client
+
 # polybar
-exec_always --no-startup-id ~/.config/polybar/polylaunch.sh
+exec_always systemctl --user restart polybars
 bindsym $mod+Shift+p exec --no-startup-id polybar-msg cmd toggle; exec ~/.config/polybar/traykill.sh
 
 # for transparent bg
-exec_always --no-startup-id picom -b --backend glx --config /home/mate/.config/picom.conf
+exec_always --no-startup-id picom -b --backend glx --vsync --xrender-sync-fence --config /home/mate/.config/picom.conf
 exec_always --no-startup-id /home/mate/util/xborder/launch.sh
 
 # take a screenshot of a screen region and copy it to a clipboard
 bindsym $mod+Shift+s exec --no-startup-id $HOME/Scripts/screenshot
 
 # displays
-set $main_disp "eDP-1"
-set $dp_disp "DP-1"
-set $hdmi_disp "HDMI-1"
+set $first_disp "HDMI-1-1"
+set $second_disp "eDP-1-1"
 
-# displays with nvidia rendering
-set $main_disp_nv "eDP-1-1"
-set $dp_disp_nv "DP-1-1"
-set $hdmi_disp_nv "HDMI-1-1"
-
-workspace $ws1 output $dp_disp_nv $dp_disp $hdmi_disp_nv $hdmi_disp $main_disp_nv $main_disp
-workspace $ws2 output $main_disp_nv $main_disp
-workspace $ws3 output $main_disp_nv $main_disp
-workspace $ws4 output $main_disp_nv $main_disp
-workspace $ws5 output $main_disp_nv $main_disp
-workspace $ws6 output $dp_disp_nv $dp_disp $hdmi_disp_nv $hdmi_disp $main_disp_nv $main_disp
-workspace $ws7 output $main_disp_nv $main_disp
-workspace $ws8 output $dp_disp_nv $dp_disp $hdmi_disp_nv $hdmi_disp $main_disp_nv $main_disp
-workspace $ws9 output $main_disp_nv $main_disp
+workspace $ws1 output $first_disp $second_disp
+workspace $ws2 output $second_disp
+workspace $ws3 output $second_disp
+workspace $ws4 output $second_disp
+workspace $ws5 output $second_disp
+workspace $ws6 output $first_disp $second_disp
+workspace $ws7 output $second_disp
+workspace $ws8 output $first_disp $second_disp
+workspace $ws9 output $second_disp
 
 # startup workspaces
 exec --no-startup-id i3-msg 'workspace $ws1;exec i3-sensible-terminal;'
 exec --no-startup-id i3-msg 'workspace $ws3;exec /home/mate/Scripts/i3/startChrome.sh;'
+# exec --no-startup-id i3-msg 'workspace $ws7;exec discord;'
 
 assign [class="obsidian"] $ws4
 assign [class="Zotero" title="^.* - Zotero$"] $ws5
-assign [class="discord"] $ws6
+assign [class="discord"] $ws7
 assign [class="Microsoft Teams - Preview"] $ws7
 
 # assign VM stuff
@@ -207,6 +206,7 @@ bindsym $mod+Return exec alacritty
 bindsym $mod+Shift+Return exec TEMP_TERM=1 i3-sensible-terminal
 
 # display settings
+exec --no-startup-id /home/mate/.screenlayout/setPrimary
 bindsym $mod+Shift+m exec /home/mate/.screenlayout/displayMono
 bindsym $mod+Shift+d exec FORCE_MULTI=1 /home/mate/.screenlayout/displayMulti
 
@@ -231,7 +231,7 @@ exec_always --no-startup-id $HOME/Scripts/i3/init-tmux-session "8-toooba" -c $HO
 exec_always --no-startup-id $HOME/Scripts/i3/init-tmux-session "9-aoc" "tmux set-hook client-session-changed 'run-shell ~/Scripts/aoc-session-refresh' && ~/Scripts/aoc-session && bash"
 
 # screen autodetect
-exec_always --no-startup-id $HOME/.screenlayout/screen-autodetect
+exec --no-startup-id $HOME/.screenlayout/displayMulti
 
 # change focus
 bindsym $mod+h focus left
