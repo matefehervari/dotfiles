@@ -127,6 +127,10 @@ nmap <leader>tt <Action>(ActivateTerminalToolWindow)
 nmap <leader>tg <Action>(ActivateVersionControlToolWindow)
 nmap <leader>tr <Action>(ActivateRunToolWindow)
 
+nmap <leader>qt <Action>(ActivateTerminalToolWindow)<Action>(HideActiveWindow)
+nmap <leader>qg <Action>(ActivateVersionControlToolWindow)<Action>(HideActiveWindow)
+nmap <leader>qr <Action>(ActivateRunToolWindow)<Action>(HideActiveWindow)
+
 " --- IDE Action ---
 nnoremap <leader>cc :e ~/.ideavimrc<CR>
 nnoremap <leader>cs :source ~/.ideavimrc<CR>
