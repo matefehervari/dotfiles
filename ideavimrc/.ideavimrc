@@ -10,40 +10,63 @@ set scrolloff=5
 set ideajoin
 set clipboard=unnamedplus
 set relativenumber
-
-" Do incremental searching.
 set incsearch
+set whichwrap+=<,>,[,],h,l
+set ignorecase
+set smartcase
 
-" Don't use Ex mode, use Q for formatting.
-map Q gq
-
-
-" the leader
 let mapleader = " "
 
-" --- Enable IdeaVim plugins https://jb.gg/ideavim-plugins
-
-" Highlight copied text
+" -- Ideavim plugin
 Plug 'machakann/vim-highlightedyank'
-" Commentary plugin
 Plug 'tpope/vim-commentary'
 Plug 'preservim/nerdtree'
 
-map <S-l> <Action>(NextTab)
-map <S-h> <Action>(PreviousTab)
-map <C-q> :bdelete<CR>
+set NERDTree
+let g:NERDTreeMapActivateNode='l'
+let g:NERDTreeMapOpenSplit='s'
+let g:NERDTreeMapOpenVSplit='v'
+let g:NERDTreeMapQuit='<Space>e'
 
-" move in insert mode
-inoremap <C-h> <Left>
-inoremap <C-l> <Right>
+" <C-r> to rename
+
+nmap <leader>e :NERDTreeToggle<CR>
+
+" --- Vanilla ---
+snoremap <Esc> <Esc><Esc><CR>
 
 " paste in place of visual block
 xnoremap <leader>p "_dP
 
-" disable highlight in normal mode
-map <Esc> :noh<CR>
+" -- Navigation --
+nnoremap w [w
+nnoremap e ]w
+nnoremap b [b
+nnoremap E ]b
+nnoremap ge E
 
-" inserting lines
+snoremap <C-h> <Left>
+snoremap <C-l> <Right>
+smap <C-j> <Action>(EditorDown)
+smap <C-k> <Action>(EditorUp)
+
+inoremap <C-h> <Left>
+inoremap <C-l> <Right>
+inoremap <C-j> <Down>
+inoremap <C-k> <Up>
+
+" move half pages with recentre
+map <C-d> <C-d>zz
+map <C-u> <C-u>zz
+
+" moving between splits
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-h> <C-w>h
+nnoremap <C-l> <C-w>l
+
+
+" --- New lines ---
 map <leader>o o<ESC>o
 map <leader>O O<ESC>O
 map <A-o> moo<ESC>`o
@@ -51,24 +74,63 @@ map <A-S-o> moO<ESC>`o
 imap <A-o> _<ESC>moo<ESC>`os
 imap <A-S-o> _<ESC>moO<ESC>`os
 
-" move half pages with recentre
-map <C-d> <C-d>zz
-map <C-u> <C-u>zz
+" --- Line operations
+nmap <leader>. <Action>(EditorDuplicateLines)
+vmap <leader>. <Action>(EditorDuplicateLines)
 
-" moving between splits
-map <C-j> <C-w>j
-map <C-k> <C-w>k
-map <C-h> <C-w>h
-map <C-l> <C-w>l
+" --- Buffers ---
+nmap <S-l> <Action>(NextTab)
+nmap <S-h> <Action>(PreviousTab)
+nmap <C-p> <Action>(PinActiveEditorTab)
+nmap <leader>h <Action>(com.mikejhill.intellij.movetab.actions.MoveTabLeft)
+nmap <leader>l <Action>(com.mikejhill.intellij.movetab.actions.MoveTabRight)
+nmap <C-q> <Action>(CloseContent)
 
-" terminal creation
-map <leader>t <Action>(ActivateTerminalToolWindow)
+" --- Find ---
+map  <leader>fa <Action>(GotoAction)
+nmap <leader>fc <Action>(GotoClass)
+nmap <leader>ff <Action>(GotoFile)
+nmap <leader>fp <Action>(WelcomeScreen.Settings)
+nmap <leader>fs <Action>(FindInPath)
+nmap <leader>fw <Action>(GotoSymbol)
 
-" run
-map <leader>r <Action>(Run)
+" --- LSP ---
 
-map <leader>e :NERDTreeToggle<CR>
+nmap <leader>a <Action>(ShowIntentionActions)
 
-map d] <Action>(GotoNextError)
-map gl <Action>(ShowErrorDescription)
-let g:NERDTreeMapActivateNode='l'
+" -- navigation --
+nmap ]d <Action>(GotoNextError)
+nmap [d <Action>(GotoPreviousError)
+nmap ]m <Action>(MethodDown)
+nmap [m <Action>(MethodUp)
+nmap gd <Action>(GotoDeclaration)
+nmap gi <Action>(GotoImplementation)
+nmap gr <Action>(FindUsages)
+nmap gs <Action>(GotoSuperMethod)
+nmap gt <Action>(GotoTypeDeclaration)
+nmap gy <Action>(GotoTest)
+
+" -- Refactoring --
+nmap <leader>rf <Action>(IntroduceField)
+nmap <leader>ri <Action>(Inline)
+nmap <leader>rm <Action>(ExtractMethod)
+nmap <leader>rn <Action>(RenameElement)
+nmap <leader>rr <Action>(Refactorings.QuickListPopupAction)
+nmap <leader>rs <Action>(ChangeSignature)
+nmap <leader>rv <Action>(IntroduceVariable)
+nmap <leader>re <Action>(RenameFile)
+
+nmap <leader>nf <Action>(NewFile)
+
+" --- Tools ---
+nmap <leader>tt <Action>(ActivateTerminalToolWindow)
+nmap <leader>tg <Action>(ActivateVersionControlToolWindow)
+nmap <leader>tr <Action>(ActivateRunToolWindow)
+
+" --- IDE Action ---
+nnoremap <leader>cc :e ~/.ideavimrc<CR>
+nnoremap <leader>cs :source ~/.ideavimrc<CR>
+nmap <leader>cr <Action>(RestartIde)
+
+nmap <leader>ir <Action>(Run)
+nmap <leader>is <Action>(Stop)
