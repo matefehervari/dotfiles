@@ -21,12 +21,23 @@ let mapleader = " "
 Plug 'machakann/vim-highlightedyank'
 Plug 'tpope/vim-commentary'
 Plug 'preservim/nerdtree'
+Plug 'easymotion/vim-easymotion'
+Plug 'tpope/vim-surround'
 
 set NERDTree
 let g:NERDTreeMapActivateNode='l'
 let g:NERDTreeMapOpenSplit='s'
 let g:NERDTreeMapOpenVSplit='v'
 let g:NERDTreeMapQuit='<Space>e'
+
+" -- Configure vim-easymotion
+set easymotion
+let g:EasyMotion_do_mapping = 0
+let g:EasyMotion_smartcase = 0
+map f <Plug>(easymotion-f)
+map F <Plug>(easymotion-F)
+map t <Plug>(easymotion-t)
+map T <Plug>(easymotion-T)
 
 " <C-r> to rename
 
@@ -38,10 +49,12 @@ snoremap <Esc> <Esc><Esc><CR>
 " paste in place of visual block
 xnoremap <leader>p "_dP
 
+nmap <leader>w :w<CR>
+
 " -- Navigation --
-nnoremap w [w
-nnoremap e ]w
-nnoremap b [b
+"nnoremap w w
+"nnoremap e ]w
+"nnoremap b [b
 nnoremap E ]b
 nnoremap ge E
 
@@ -78,6 +91,12 @@ imap <A-S-o> _<ESC>moO<ESC>`os
 nmap <leader>. <Action>(EditorDuplicateLines)
 vmap <leader>. <Action>(EditorDuplicateLines)
 
+noremap > >>
+noremap < <<
+
+vmap > >gv
+vmap < <gv
+
 " --- Buffers ---
 nmap <S-l> <Action>(NextTab)
 nmap <S-h> <Action>(PreviousTab)
@@ -90,7 +109,7 @@ nmap <C-q> <Action>(CloseContent)
 map  <leader>fa <Action>(GotoAction)
 nmap <leader>fc <Action>(GotoClass)
 nmap <leader>ff <Action>(GotoFile)
-nmap <leader>fp <Action>(WelcomeScreen.Settings)
+nmap <leader>fp <Action>(WelcomeScreen.Plugins)
 nmap <leader>fs <Action>(FindInPath)
 nmap <leader>fw <Action>(GotoSymbol)
 
@@ -103,12 +122,16 @@ nmap ]d <Action>(GotoNextError)
 nmap [d <Action>(GotoPreviousError)
 nmap ]m <Action>(MethodDown)
 nmap [m <Action>(MethodUp)
+nmap ]h <Action>(VcsShowNextChangeMarker)
+nmap [h <Action>(VcsShowPrevChangeMarker)
 nmap gd <Action>(GotoDeclaration)
 nmap gi <Action>(GotoImplementation)
 nmap gr <Action>(FindUsages)
 nmap gs <Action>(GotoSuperMethod)
 nmap gt <Action>(GotoTypeDeclaration)
 nmap gy <Action>(GotoTest)
+nmap gl <Action>(ShowErrorDescription)
+nmap <leader>gb <Action>(Annotate)
 
 " -- Refactoring --
 nmap <leader>rf <Action>(IntroduceField)
@@ -126,10 +149,12 @@ nmap <leader>nf <Action>(NewFile)
 nmap <leader>tt <Action>(ActivateTerminalToolWindow)
 nmap <leader>tg <Action>(ActivateVersionControlToolWindow)
 nmap <leader>tr <Action>(ActivateRunToolWindow)
+nmap <leader>tf <Action>(ActivateFindToolWindow)
 
 nmap <leader>qt <Action>(ActivateTerminalToolWindow)<Action>(HideActiveWindow)
 nmap <leader>qg <Action>(ActivateVersionControlToolWindow)<Action>(HideActiveWindow)
 nmap <leader>qr <Action>(ActivateRunToolWindow)<Action>(HideActiveWindow)
+nmap <leader>qf <Action>(ActivateFindToolWindow)<Action>(HideActiveWindow)
 
 " --- IDE Action ---
 nnoremap <leader>cc :e ~/.ideavimrc<CR>
@@ -138,3 +163,7 @@ nmap <leader>cr <Action>(RestartIde)
 
 nmap <leader>ir <Action>(Run)
 nmap <leader>is <Action>(Stop)
+
+" --- Task Management ---
+nmap <leader>ql <Action>(context.load)
+nmap <leader>qs <Action>(context.save)
