@@ -193,19 +193,11 @@ alias ls="eza -a --color=always --git"
 
 # ----- cd venv activation -----
 
-function is_poetry_env() {
-    poetry env info &>/dev/null
-}
-
 function handle_venv() {
     if [[ -z "$VIRTUAL_ENV" ]] ; then
         ## If env folder is found then activate the vitualenv
         if [[ -d ./.venv ]] ; then
             source ./.venv/bin/activate
-        elif is_poetry_env; then
-            $(poetry env activate)
-        elif [[ -d ./venv ]] ; then
-            source ./venv/bin/activate
         fi
     else
         ## check the current folder belong to earlier VIRTUAL_ENV folder
