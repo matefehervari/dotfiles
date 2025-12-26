@@ -1,8 +1,11 @@
 #!/bin/bash
 
+language="python" # hardcoded language of choice for this year
 year=$(date +%Y)
 day=$(date +%d)
-day_dir="_$year/Day$day"
+lang_dir="$language/"
+year_dir="$lang_dir/_$year"
+day_dir="$year_dir/Day$day"
 
 existing_aoc_session()
 {
@@ -11,14 +14,15 @@ existing_aoc_session()
 
 files_to_open=(
     "$day_dir/day*"
-    "_$year/input/day$day.txt"
-    "_$year/input/day00.txt"
+    "input/$year/day$day.txt"
+    "input/$year/day00.txt"
 )
 
 if existing_aoc_session; then
     nvim --server /tmp/nvim-aoc.pipe --remote-send ":wa<CR>" &&
     nvim --server /tmp/nvim-aoc.pipe --remote-send ":%bd<CR>" &&
     nvim --server /tmp/nvim-aoc.pipe --remote-send ":args $(IFS=' '; echo ${files_to_open[@]})<CR>"
+    nvim --server /tmp/nvim-aoc.pipe --remote-send ":!./puzz<CR>"
     # nvim --server /tmp/nvim-aoc.pipe --remote-send \
     # ":lua require('nvim-tree.api').live_filter.clear()<CR>"
     # nvim --server /tmp/nvim-aoc.pipe --remote-send \

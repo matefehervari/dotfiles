@@ -1,13 +1,16 @@
 #!/bin/bash
 
+language="python" # hardcoded language of choice for this year
 year=$(date +%Y)
 day=$(date +%d)
-day_dir="_$year/Day$day"
+lang_dir="$language/"
+year_dir="$lang_dir/_$year"
+day_dir="$year_dir/Day$day"
 
 files_to_open=(
     "$day_dir/day*"
-    "_$year/input/day$day.txt"
-    "_$year/input/day00.txt"
+    "input/$year/day$day.txt"
+    "input/$year/day00.txt"
 )
 
 cd ~/projects/advent_calendar/
