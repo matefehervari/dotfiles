@@ -130,7 +130,7 @@ nmap gr <Action>(FindUsages)
 nmap gs <Action>(GotoSuperMethod)
 nmap gt <Action>(GotoTypeDeclaration)
 nmap gy <Action>(GotoTest)
-nmap gl <Action>(ShowErrorDescription)
+map gl <Action>(ShowErrorDescription)
 nmap <leader>gb <Action>(Annotate)
 
 " -- Refactoring --
