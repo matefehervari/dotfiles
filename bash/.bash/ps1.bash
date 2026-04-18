@@ -146,19 +146,6 @@ print_prompt() {
         GIT_VENV_SEP="  "
     fi
 
-    PS1L="$USER  $DIRECTORY"
-    PS1R="$BRANCH  $VENV"
-    PS1R_LEN=${#PS1R}
-    if [[ $BRANCH ]]; then
-         PS1R_LEN=$(($PS1R_LEN + 2))
-         BRANCH=" $BRANCH"
-    fi
-    PS1R="$BRANCH$GIT_VENV_SEP$VENV"
-    # if [[ $BRANCH ]] || [[ $VENV ]]; then
-    #     PS1="$(printf "╭─ $FG2%s $RESET $FG3%s%$(($COLUMNS-${#PS1L}-$PS1R_LEN-3))s$FG4%s$RESET$GIT_VENV_SEP$FG1%s\n$RESET│\n╰ " "$USER" "$DIRECTORY" "" "$BRANCH" "$VENV")"
-    # else
-    #     PS1="$(printf "╭─ $FG2%s $RESET $FG3%s\n$RESET│\n╰ " "$USER" "$DIRECTORY")"
-    # fi
     if [[ $BRANCH ]] || [[ $VENV ]]; then
         PS1="$(printf "╭─ $FG2%s $FG3%s$FG4%s$FG1%s$RESET\n╰ " "$USER" "$DIRECTORY" " $BRANCH" " $VENV")"
     else

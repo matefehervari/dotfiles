@@ -10,9 +10,6 @@ esac
 
 HOME="/home/mate"
 
-if [ -f $HOME/.bash/.gcloudrc ]; then
-    source $HOME/.bash/.gcloudrc
-fi
 if [ -f $HOME/.bash/.tmux_completion ]; then
     source $HOME/.bash/.tmux_completion.sh
 fi
@@ -140,6 +137,7 @@ export TEXINPUT=".:$SUPO_HOME:$TEXINPUTS"
 export BLUESPECDIR="/opt/bsc-2024.07-ubuntu-22.04/lib/" # used for building diss
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 export RISCV="/home/mate/util/riscv/"
+export PROJECT_HOME="/home/mate/projects/"
 
 # ---------------------------------
 
@@ -169,21 +167,6 @@ bind '"\e[1;5D" backward-word'
 bind '"\e[1;5C" forward-word'
 
 # ----------------------------------
-
-# ----- Uni shortcuts -----
-
-t() { cd $UNI_HOME/$UNI_YEAR/ticks/$1; }
-s() { 
-    if [[ ! -z $2 ]] ; then
-        cd $UNI_HOME/$UNI_YEAR/supervisions/$1/$1_$2;
-    else
-        cd $UNI_HOME/$UNI_YEAR/supervisions/$1;
-    fi
-}
-p() { cd $UNI_HOME/$UNI_YEAR/practicals/$1; }
-d() { cd $UNI_HOME/$UNI_YEAR/dissertation/$1; }
-
-# -------------------------
 
 # ---- Eza (better ls) ----
 
